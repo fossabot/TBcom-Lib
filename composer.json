@@ -1,0 +1,14 @@
+{
+	"name": "Babkock/TBcom-Lib",
+	"description": "Core library for TannerBabcock.com, open for use on other websites as well.",
+	"license": "MIT",
+	"homepage": "https://github.com/Babkock/TBcom-Lib",
+	"version": "0.5",
+	"authors": [
+		{
+			"name": "Tanner Babcock",
+			"email": "tanner.a.babcock@gmail.com",
+			"homepage": "https://tannerbabcock.com"
+		}
+	]
+}
