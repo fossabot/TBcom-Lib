@@ -30,5 +30,17 @@ class Message extends PostType {
 		$this->sent = null;
 		$this->useragent = null;
 	}
+
+	public function getName() { return $this->first . " " . $this->last; }
+	public function setFirst($f = "") { $this->first = $f; }
+	public function setLast($l = "") { $this->last = $l; }
+	public function getEmail() { return $this->email; }
+	public function setEmail($e = "") { $this->email = $e; }
+	public function getSent() { return $this->sent; }
+	public function setSent($s = "") { $this->sent = $s; }
+	public function getAgent() { return $this->useragent; }
+	public function setAgent($u = "") { $this->useragent = $u; }
+	public function isPortfolio() { return $this->portfolio; }
+
 };
 

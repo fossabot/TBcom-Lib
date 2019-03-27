@@ -37,6 +37,25 @@ class Opinion {
 	public function getFormat() { return $this->format; }
 	public function setBody($b) { $this->body = $b; }
 
+	public function seta($arr) {
+		foreach ($arr as $k => $v) {
+			if (strcmp($k, "file") == 0) { $this->file = $v; }
+			if (strcmp($k, "comp") == 0) { $this->comp = $v; }
+			if (strcmp($k, "body") == 0) { $this->body = $v; }
+			if (strcmp($k, "type") == 0) { $this->type = $v; }
+			if (strcmp($k, "format") == 0) { $this->format = $v; }
+		}
+	}
+	public function geta(&$arr) {
+		$arr = [
+			"file" => $this->file,
+			"comp" => $this->comp,
+			"body" => $this->body,
+			"type" => $this->type,
+			"format" => $this->format
+		];
+	}
+
 	public function getBody($parse = 2) {
 		if ($parse == 1) {
 			$parser = new \JBBCode\Parser();
