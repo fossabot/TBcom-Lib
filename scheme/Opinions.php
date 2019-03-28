@@ -187,6 +187,9 @@ class Opinion {
 	}
 
 	public function recent($type = "film") {
+		global $TheBase;
+		$ext = \TBcom\ext;
+
 		$st = $TheBase->Prepare("SELECT * FROM `opinions` WHERE `type`='" . $type . "' ORDER BY `comp` DESC LIMIT 1");
 		if (!($st->bind_result($o_file, $o_body, $o_type, $o_format, $o_comp)) || !($st->execute())) {
 			$st->close();

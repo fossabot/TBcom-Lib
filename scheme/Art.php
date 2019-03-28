@@ -179,6 +179,9 @@ class Art extends PostType {
 	}
 
 	public function getRecent() {
+		global $TheBase;
+		$ext = \TBcom\ext;
+
 		$st = $TheBase->Prepare("SELECT * FROM `art` ORDER BY `comp` DESC LIMIT 1");
 		if (!($st->bind_result($a_id, $a_comp, $a_series, $a_descript, $a_title)) || !($st->execute())) {
 			$st->close();
