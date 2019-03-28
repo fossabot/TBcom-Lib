@@ -207,8 +207,8 @@ class Blog extends PostType {
 				])
 			: "");
 
-			if (strlen($parsedBody) > 1450)
-				$trimmed = substr($parsedBody, 0, 1450) . "...</p><center><a href=\"blog{$ext}?id={$s_id}\" class=\"blogexpand\">Read the full blog post.</a></center>";
+			if (strlen($parsedBody) > 1600)
+				$trimmed = substr($parsedBody, 0, 1600) . "...</p><center><a href=\"blog{$ext}?id={$s_id}\" class=\"blogexpand\">Read the full blog post.</a></center>";
 			else
 				$trimmed = $parsedBody;
 			
