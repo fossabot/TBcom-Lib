@@ -163,20 +163,20 @@ class Blog extends PostType {
 		unset($st);
 	}
 
-	public static function echoRecent($admin = false, $sadmin = "", $gtag = "", $goffset = null) {
+	public static function echoRecent($admin = false, $sadmin = "") {
 		global $TheBase;
 		$ext = \TBcom\ext;
 
-		if (isset($gtag)) {
-			$st = $TheBase->Prepare("SELECT * FROM `blog` WHERE `tag`=? ORDER BY `id` DESC LIMIT 5" . ((isset($goffset)) ? (" OFFSET " . $goffset) : ""));
+		if (isset($_GET['tag'])) {
+			$st = $TheBase->Prepare("SELECT * FROM `blog` WHERE `tag`=? ORDER BY `id` DESC LIMIT 5" . ((isset($_GET['offset'])) ? (" OFFSET " . $_GET['offset']) : ""));
 			if (!($st->bind_param("s", $old_tag))) {
 				$st->close();
 				throw new \TBcom\MySQLFailException();
 			}
-			$old_tag = $gtag;
+			$old_tag = $_GET['tag'];
 		}
 		else {
-			$st = $TheBase->Prepare("SELECT * FROM `blog` ORDER BY `id` DESC LIMIT 5" . ((isset($goffset)) ? (" OFFSET " . $goffset) : ""));
+			$st = $TheBase->Prepare("SELECT * FROM `blog` ORDER BY `id` DESC LIMIT 5" . ((isset($_GET['offset'])) ? (" OFFSET " . $_GET['offset']) : ""));
 		}
 
 		$output = "";
