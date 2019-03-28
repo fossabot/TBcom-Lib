@@ -10,9 +10,24 @@ namespace TBcom\Scheme;
 require_once(__DIR__ . "/../Post.php");
 
 class Blog extends PostType {
-	private $title;
-	private $tag;
+	/* TABLE: `blog`
+		___________________________
+		|       id | int(11)      | The ID of the blog post.
+		|----------|--------------|
+		|     comp | date         | The date the post was written.
+		|----------|--------------|
+		|      tag | varchar(20)  | The tag for the post, for sorting and filtering.
+		|----------|--------------|
+		|    title | varchar(150) | The title of the post.
+		|----------|--------------|
+		|     type | varchar(3)   | Text format, either BBCode ("bb") or Markdown ("md").
+		|----------|--------------|
+		|     body | text         | The body of the blog post.
+		|__________|______________|
+	*/
 	private $comp;
+	private $tag;
+	private $title;	
 	private $type;
 
 	public function __construct($i = 0, $b = "") {
@@ -345,7 +360,7 @@ EOF;
 
 		while ($st->fetch()) {
 			if (strcmp($s_format, "md") == 0) {
-				$bodyPreview = str_replace("\n", " ", substr($Parsedown->text($s_body), 0, 97));
+				$bodyPreview = str_replace("\n", " ", substr($s_body, 0, 97));
 			}
 			else if (strcmp($s_format, "bb") == 0) {
 				$bodyPreview = str_replace("[/p]", "", str_replace("[p]", "", substr($s_body, 0, 96)));

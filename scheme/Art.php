@@ -10,8 +10,21 @@ namespace TBcom\Scheme;
 require_once(__DIR__ . "/../Post.php");
 
 class Art extends PostType {
-	private $series;
+	/* TABLE: `art`
+		______________________________
+		|          id | int(11)      |  The ID of the piece, relative to its series.
+		|-------------|--------------|
+		|        comp | date         |  The (approximate) date the piece was completed or uploaded.
+		|-------------|--------------|
+		|      series | varchar(4)   |  The four-letter series code for the piece.
+		|-------------|--------------|
+		| description | varchar(250) |  The description of the piece, in BBCode.
+		|-------------|--------------|
+		|       title | varchar(120) |  The title of the piece. Optional.
+		|_____________|______________|
+	*/
 	private $comp;
+	private $series;
 	private $title;
 
 	public function __construct($i = 0, $b = "") {

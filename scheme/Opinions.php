@@ -9,11 +9,25 @@
 namespace TBcom\Scheme;
 
 class Opinion {
+	/* TABLE: `opinions`
+		___________________________
+		|    file | varchar(30)   |  The HTML filename of the opinion page.
+		|---------|---------------|
+		|    body | text          |  The body of the review/reviews.
+		|---------|---------------|
+		|    type | varchar(6)    |  Film or music?
+		|---------|---------------|
+		|  format | varchar(2)    |  Text format, either BBCode ("bb") or Markdown ("md").
+		|---------|---------------|
+		|    comp | date          |  The date the review was last modified.
+		|_________|_______________|
+
+	*/
 	private $file;
-	private $comp;
 	private $body;
 	private $type;
 	private $format;
+	private $comp;
 
 	public function __construct($f = "") {
 		$this->file = $f;

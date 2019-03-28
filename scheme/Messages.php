@@ -10,6 +10,27 @@ namespace TBcom\Scheme;
 require_once(__DIR__ . "/../Post.php");
 
 class Message extends PostType {
+	/* TABLE: `messages`
+		_______________________________
+		|           id | int(11)      |  The ID of the message.
+		|--------------|--------------|
+		|        first | varchar(30)  |  The first name of the message author.
+		|--------------|--------------|
+		|         last | varchar(40)  |  The last name of the message author.
+		|--------------|--------------|
+		|      subject | varchar(140) |  The subject line, or "website" on the portfolio form.
+		|--------------|--------------|
+		|        email | varchar(50)  |  The author's email.
+		|--------------|--------------|
+		|         body | text         |  The message body.
+		|--------------|--------------|
+		|         sent | date         |  The date the message was sent.
+		|--------------|--------------|
+		|    useragent | varchar(300) |  The user agent of the message sender.
+		|--------------|--------------|
+		|    portfolio | tinyint(1)   |  Whether the message was submitted through the main site contact form (0), or the portfolio contact form (1).
+		|______________|______________|
+	*/
 	private $first;
 	private $last;
 	private $subject;
