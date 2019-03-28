@@ -192,7 +192,7 @@ class Blog extends PostType {
 			if (strcmp($s_type, "md") == 0) {
 				$parsedBody = $Parsedown->text($s_body);
 			}
-			else if (strcmp($s_type, "bb") == 0) {
+			else {
 				$parser->parse($s_body);
 				$parsedBody = $parser->getAsHtml();
 			}
