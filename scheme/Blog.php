@@ -228,7 +228,7 @@ EOF;
 		unset($trimmed);
 		unset($thedate);
 		unset($sAdminRow);
-		return $output . "</div>";
+		return $output;
 	}
 
 	public static function archive() {
