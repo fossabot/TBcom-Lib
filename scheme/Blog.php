@@ -184,11 +184,11 @@ class Blog extends PostType {
 
 		$st = $TheBase->Prepare("SELECT * FROM `blog` ORDER BY `id` DESC LIMIT 1");
 		if (!($st->bind_result($b_id, $b_comp, $b_tag, $b_title, $b_format, $b_body)) || !($st->execute())) {
-			$stmnt->close();
+			$st->close();
 			throw new MySQLFailException();
 		}
-		$stmnt->fetch();
-		$stmnt->close();
+		$st->fetch();
+		$st->close();
 
 		parent::setId($b_id);
 		$this->comp = $b_comp;
