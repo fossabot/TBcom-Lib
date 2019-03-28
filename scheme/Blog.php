@@ -163,20 +163,20 @@ class Blog extends PostType {
 		unset($st);
 	}
 
-	public static function echoRecent($admin = false, $sadmin = "") {
+	public static function echoRecent($admin = false, $sadmin = "", $gtag = "", $goffset = null) {
 		global $TheBase;
 		$ext = \TBcom\ext;
 
-		if (isset($_GET['tag'])) {
-			$st = $TheBase->Prepare("SELECT * FROM `blog` WHERE `tag`=? ORDER BY `id` DESC LIMIT 5" . ((isset($_GET['offset'])) ? (" OFFSET " . $_GET['offset']) : ""));
+		if (isset($gtag)) {
+			$st = $TheBase->Prepare("SELECT * FROM `blog` WHERE `tag`=? ORDER BY `id` DESC LIMIT 5" . ((isset($goffset)) ? (" OFFSET " . $goffset) : ""));
 			if (!($st->bind_param("s", $old_tag))) {
 				$st->close();
 				throw new \TBcom\MySQLFailException();
 			}
-			$old_tag = $_GET['tag'];
+			$old_tag = $gtag;
 		}
 		else {
-			$st = $TheBase->Prepare("SELECT * FROM `blog` ORDER BY `id` DESC LIMIT 5" . ((isset($_GET['offset'])) ? (" OFFSET " . $_GET['offset']) : ""));
+			$st = $TheBase->Prepare("SELECT * FROM `blog` ORDER BY `id` DESC LIMIT 5" . ((isset($goffset)) ? (" OFFSET " . $goffset) : ""));
 		}
 
 		$output = "";
@@ -198,10 +198,10 @@ class Blog extends PostType {
 			}
 			
 			$sAdminRow = (($admin) ?
-					\TBcom\Tag("<span class=\"admin\"><p><a href=\"/admin/blog{{0}}?sett=editor&amp;mode={{1}}{{2}}\">Edit</a> &bull; <a href=\"/admin/blog{{0}}?sett=delete&amp;mode={{1}}{{2}}\">Delete</a> &bull; <a href=\"/admin/blog{{0}}?sett=table{{2}}\">Blog Table</a></p></span>", [
-						$ext, $s_id, $sadmin
-					])
-				: "");
+				\TBcom\Tag("<span class=\"admin\"><p><a href=\"/admin/blog{{0}}?sett=editor&amp;mode={{1}}{{2}}\">Edit</a> &bull; <a href=\"/admin/blog{{0}}?sett=delete&amp;mode={{1}}{{2}}\">Delete</a> &bull; <a href=\"/admin/blog{{0}}?sett=table{{2}}\">Blog Table</a></p></span>", [
+					$ext, $s_id, $sadmin
+				])
+			: "");
 
 			if (strlen($parsedBody) > 1450)
 				$trimmed = substr($parsedBody, 0, 1450) . "...</p><center><a href=\"blog{$ext}?id={$s_id}\" class=\"blogexpand\">Read the full blog post.</a></center>";
@@ -228,7 +228,7 @@ EOF;
 		unset($trimmed);
 		unset($thedate);
 		unset($sAdminRow);
-		return $output;
+		return $output . "</div>";
 	}
 
 	public static function archive() {
