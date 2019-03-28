@@ -180,7 +180,11 @@ class Blog extends PostType {
 		}
 
 		$output = "";
-		if (!($st->bind_result($s_id, $s_comp, $s_tag, $s_title, $s_type, $s_body)) || !($st->execute())) {
+		if (!($st->bind_result($s_id, $s_comp, $s_tag, $s_title, $s_type, $s_body))) {
+			$st->close();
+			throw new \TBcom\MySQLFailException();
+		}
+		if (!($st->execute())) {
 			$st->close();
 			throw new \TBcom\MySQLFailException();
 		}
