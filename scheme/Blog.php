@@ -171,12 +171,13 @@ class Blog extends PostType {
 			$st = $TheBase->Prepare("SELECT * FROM `blog` WHERE `tag`=? ORDER BY `id` DESC LIMIT 5" . ((isset($_GET['offset'])) ? (" OFFSET " . $_GET['offset']) : ""));
 			if (!($st->bind_param("s", $old_tag))) {
 				$st->close();
-				throw new MySQLFailException();
+				throw new \TBcom\MySQLFailException();
 			}
 			$old_tag = $_GET['tag'];
 		}
-		else
+		else {
 			$st = $TheBase->Prepare("SELECT * FROM `blog` ORDER BY `id` DESC LIMIT 5" . ((isset($_GET['offset'])) ? (" OFFSET " . $_GET['offset']) : ""));
+		}
 
 		$output = "";
 		if (!($st->bind_result($s_id, $s_comp, $s_tag, $s_title, $s_type, $s_body)) || !($st->execute())) {
