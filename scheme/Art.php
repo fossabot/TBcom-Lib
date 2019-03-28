@@ -50,7 +50,7 @@ class Art extends PostType {
 	public function geta(&$arr) {
 		$arr = [
 			"id" => parent::getId(),
-			"body" => parent::bodyId(),
+			"body" => parent::getBody(),
 			"series" => $this->series,
 			"comp" => $this->comp,
 			"title" => $this->title
