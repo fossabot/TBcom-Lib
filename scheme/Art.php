@@ -282,11 +282,11 @@ EOF;
 		$max = $result->num_rows;
 
 		if (intval($i) > 1) {
-			$output .= "\t\t\t<li><a href=\"art{$ext}?s={$s}&amp;id=" . ($i - 1) . (($ad) ? "&amp;tok={$artIndex->getToken()}\"" : "\"") . " class=\"prev-link\" alt=\"Previous piece in the series\" title=\"Previous piece in the series\">&larr; Previous Piece</a></li>\n";
+			$output .= "\t\t\t<li><a href=\"art{$ext}?s={$s}&amp;id=" . ($i - 1) . (($ad) ? "&amp;tok={$_GET['tok']}\"" : "\"") . " class=\"prev-link\" alt=\"Previous piece in the series\" title=\"Previous piece in the series\">&larr; Previous Piece</a></li>\n";
 		}
 		$output .= "\t\t\t<li>&nbsp;</li>\n";
 		if (intval($i) < $max) {
-			$output .= "\t\t\t<li><a href=\"art{$ext}?s={$s}&amp;id=" . ($i + 1) . (($ad) ? "&amp;tok={$artIndex->getToken()}\"" : "\"") . " class=\"next-link\" alt=\"Next piece in the series\" title=\"Next piece in the series\">Next Piece &rarr;</a></li>\n";
+			$output .= "\t\t\t<li><a href=\"art{$ext}?s={$s}&amp;id=" . ($i + 1) . (($ad) ? "&amp;tok={$_GET['tok']}\"" : "\"") . " class=\"next-link\" alt=\"Next piece in the series\" title=\"Next piece in the series\">Next Piece &rarr;</a></li>\n";
 		}
 
 		$output .= "\t\t</ul>\n";
