@@ -178,6 +178,27 @@ class Blog extends PostType {
 		unset($st);
 	}
 
+	public function getRecent() {
+		global $TheBase;
+		$ext = \TBcom\ext;
+
+		$st = $TheBase->Prepare("SELECT * FROM `blog` ORDER BY `id` DESC LIMIT 1");
+		if (!($st->bind_result($b_id, $b_comp, $b_tag, $b_title, $b_format, $b_body)) || !($st->execute())) {
+			$stmnt->close();
+			throw new MySQLFailException();
+		}
+		$stmnt->fetch();
+		$stmnt->close();
+
+		parent::setId($b_id);
+		$this->comp = $b_comp;
+		$this->tag = $b_tag;
+		$this->title = $b_title;
+		$this->type = $b_format;
+		parent::setBody($b_body);
+		unset($st);
+	}
+
 	public static function echoRecent($admin = false, $sadmin = "") {
 		global $TheBase;
 		$ext = \TBcom\ext;

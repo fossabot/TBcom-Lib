@@ -186,6 +186,22 @@ class Opinion {
 		unset($st);
 	}
 
+	public function recent($type = "film") {
+		$st = $TheBase->Prepare("SELECT * FROM `opinions` WHERE `type`='" . $type . "' ORDER BY `comp` DESC LIMIT 1");
+		if (!($st->bind_result($o_file, $o_body, $o_type, $o_format, $o_comp)) || !($st->execute())) {
+			$st->close();
+			throw new \TBcom\MySQLFailException();
+		}
+		$st->fetch();
+		$st->close();
+		$this->file = $o_file;
+		$this->body = $o_body;
+		$this->type = $o_type;
+		$this->format = $o_format;
+		$this->comp = $o_comp;
+		unset($st);
+	}
+
 	public static function table($token) {
 		global $TheBase;
 		$ext = \TBcom\ext;

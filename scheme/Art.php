@@ -178,6 +178,22 @@ class Art extends PostType {
 		unset($fdescript);
 	}
 
+	public function getRecent() {
+		$st = $TheBase->Prepare("SELECT * FROM `art` ORDER BY `comp` DESC LIMIT 1");
+		if (!($st->bind_result($a_id, $a_comp, $a_series, $a_descript, $a_title)) || !($st->execute())) {
+			$st->close();
+			throw new \TBcom\MySQLFailException();
+		}
+		$st->fetch();
+		$st->close();
+		parent::setId($a_id);
+		$this->comp = $a_comp;
+		$this->series = $a_series;
+		$this->title = $a_title;
+		parent::setBody($a_descript);
+		unset($st);
+	}
+
 	public static function fetchCode($code = "", &$numrows = 0) {
 		global $TheBase;
 
