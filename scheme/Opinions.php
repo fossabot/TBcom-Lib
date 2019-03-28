@@ -36,6 +36,23 @@ class Opinion {
 	public function setFormat($f = "") { $this->format = $f; }
 	public function getFormat() { return $this->format; }
 	public function setBody($b) { $this->body = $b; }
+	public function getBody($parse = 2) {
+		if ($parse == 1) {
+			$parser = new \JBBCode\Parser();
+			$parser->addCodeDefinitionSet(new \JBBCode\DefaultCodeDefinitionSet());
+			$Parsedown = new \Parsedown();
+
+			if ($this->isMark()) {
+				return $Parsedown->text($this->body);
+			}
+			else {
+				$parser->parse($this->body);
+				return $parser->getAsHtml();
+			}
+		}
+		else
+			return $this->body;
+	}
 
 	public function seta($arr) {
 		foreach ($arr as $k => $v) {
@@ -54,24 +71,6 @@ class Opinion {
 			"type" => $this->type,
 			"format" => $this->format
 		];
-	}
-
-	public function getBody($parse = 2) {
-		if ($parse == 1) {
-			$parser = new \JBBCode\Parser();
-			$parser->addCodeDefinitionSet(new \JBBCode\DefaultCodeDefinitionSet());
-			$Parsedown = new \Parsedown();
-
-			if ($this->isMark()) {
-				return $Parsedown->text($this->body);
-			}
-			else {
-				$parser->parse($this->body);
-				return $parser->getAsHtml();
-			}
-		}
-		else
-			return $this->body;
 	}
 
 	public function isMark() {

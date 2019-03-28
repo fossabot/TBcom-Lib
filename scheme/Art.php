@@ -24,7 +24,13 @@ class Art extends PostType {
 
 	public function getId() { return parent::getId(); }
 	public function setId($i) { parent::setId($i); }
-
+	public function getSeries() { return $this->series; }
+	public function setSeries($s) { $this->series = $s; }
+	public function getComp() { return $this->comp; }
+	public function setComp($c) { $this->comp = $c; }
+	public function getTitle() { return $this->title; }
+	public function setTitle($t) { $this->title = $t; }
+	public function setBody($b) { parent::setBody($b); }
 	public function getBody() {
 		$parser = new \JBBCode\Parser();
 		$parser->addCodeDefinitionSet(new \JBBCode\DefaultCodeDefinitionSet());
@@ -32,13 +38,24 @@ class Art extends PostType {
 		return $parser->getAsHtml();
 	}
 
-	public function setBody($b) { parent::setBody($b); }
-	public function getSeries() { return $this->series; }
-	public function setSeries($s) { $this->series = $s; }
-	public function getComp() { return $this->comp; }
-	public function setComp($c) { $this->comp = $c; }
-	public function getTitle() { return $this->title; }
-	public function setTitle($t) { $this->title = $t; }
+	public function seta($arr) {
+		foreach ($arr as $k => $v) {
+			if (strcmp($k, "id") == 0) { parent::setId($v); }
+			if (strcmp($k, "body") == 0) { parent::setBody($v); }
+			if (strcmp($k, "series") == 0) { $this->series = $v; }
+			if (strcmp($k, "comp") == 0) { $this->comp = $v; }
+			if (strcmp($k, "title") == 0) { $this->title = $v; }
+		}
+	}
+	public function geta(&$arr) {
+		$arr = [
+			"id" => parent::getId(),
+			"body" => parent::bodyId(),
+			"series" => $this->series,
+			"comp" => $this->comp,
+			"title" => $this->title
+		];
+	}
 
 	public function write() {
 		if (isset($this->title)) {

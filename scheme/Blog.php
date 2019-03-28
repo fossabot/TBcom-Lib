@@ -32,7 +32,6 @@ class Blog extends PostType {
 	public function setId($i) { parent::setId($i); }
 	public function getId() { return parent::getId(); }
 	public function setBody($b) { parent::setBody($b); }
-
 	public function getBody($parse = 2) {
 		if ($parse == 1) {
 			$parser = new \JBBCode\Parser();
@@ -53,6 +52,27 @@ class Blog extends PostType {
 
 	public function setType($t) { $this->type = $t; }
 	public function getType() { return $this->type; }
+
+	public function seta($arr) {
+		foreach ($arr as $k => $v) {
+			if (strcmp($k, "id") == 0) { parent::setId($v); }
+			if (strcmp($k, "body") == 0) { parent::setBody($v); }
+			if (strcmp($k, "title") == 0) { $this->title = $v; }
+			if (strcmp($k, "tag") == 0) { $this->tag = $v; }
+			if (strcmp($k, "comp") == 0) { $this->comp = $v; }
+			if (strcmp($k, "type") == 0) { $this->type = $v; }
+		}
+	}
+	public function geta(&$arr) {
+		$arr = [
+			"id" => parent::getId(),
+			"body" => parent::getBody(),
+			"title" => $this->title,
+			"tag" => $this->tag,
+			"comp" => $this->comp,
+			"type" => $this->type
+		];
+	}
 
 	public function isMark() {
 		if (strcmp($this->type, "md") == 0)
