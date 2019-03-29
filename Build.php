@@ -176,9 +176,9 @@ class Page {
 			$this->footer = new Footer($f);
 			$this->start = microtime(true);
 		}
-		/* catch (\TBcom\NoHeaderException $ex) {
+		catch (\TBcom\NoHeaderException $ex) {
 			header('Location: /error' . \TBcom\ext . '?e=500');
-		} */
+		}
 		catch (\TBcom\NoContentException $ex) {
 			header('Location: /error' . \TBcom\ext . '?e=404');
 		}
@@ -186,16 +186,15 @@ class Page {
 	}
 
 	public function setPageCode($p) {
-		/*
 		try {
 			if (($p > 40) && (!$this->token))
 				throw new \TBcom\AccessRestrictedException();
 			else
-				*/ $this->pagecode = $p;
-		/* }
+				$this->pagecode = $p;
+		}
 		catch (\TBcom\AccessRestrictedException $ex) {
 			header('Location: /error' . \TBcom\ext . '?e=403');
-		} */
+		}
 	}
 	public function getPageCode() {
 		return $this->pagecode;
@@ -244,7 +243,7 @@ class Page {
 				throw new \TBcom\NoHeaderException();
 		}
 		catch (\TBcom\NoHeaderException $ex) {
-			// header('Location: /error' . \TBcom\ext . '?e=500');
+			header('Location: /error' . \TBcom\ext . '?e=500');
 		}
 	}
 
@@ -375,51 +374,26 @@ EOF;
 		$hour = date("H", mktime());
 
 		if ($this->pagecode > 40) {
-			if ((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) {
-				$this->header->replace("{{STYLE}}", "admin_linux.css");
-			}
-			else {
-				$this->header->replace("{{STYLE}}", "admin.css");
-			}
+			$this->header->replace("{{STYLE}}", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "admin_linux.css" : "admin.css"));
 		}
 
 		if (isset($_SESSION["style"])) {
 			if (strcmp($_SESSION["style"], "day") == 0) {
-				if ((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) {
-					$this->header->replace("{{STYLE}}", "daytime_linux.css");
-				}
-				else {
-					$this->header->replace("{{STYLE}}", "daytime.css");
-				}
+				$this->header->replace("{{STYLE}}", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "daytime_linux.css" : "daytime.css"));
 				$this->footer->replace("{{SWITCHTO}}", "night");
 			}
 			else {
-				if ((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) {
-					$this->header->replace("{{STYLE}}", "style_linux.css");
-				}
-				else {
-					$this->header->replace("{{STYLE}}", "style.css");
-				}
+				$this->header->replace("{{STYLE}}", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "style_linux.css" : "style.css"));
 				$this->footer->replace("{{SWITCHTO}}", "day");
 			}
 		}
 		else {
 			if ((intval($hour) >= 9) && (intval($hour) <= 19)) {
-				if ((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) {
-					$this->header->replace("{{STYLE}}", "daytime_linux.css");
-				}
-				else {
-					$this->header->replace("{{STYLE}}", "daytime.css");
-				}
+				$this->header->replace("{{STYLE}}", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "daytime_linux.css" : "daytime.css"));
 				$this->footer->replace("{{SWITCHTO}}", "night");
 			}
 			else {
-				if ((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) {
-					$this->header->replace("{{STYLE}}", "style_linux.css");
-				}
-				else {
-					$this->header->replace("{{STYLE}}", "style.css");
-				}
+				$this->header->replace("{{STYLE}}", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "style_linux.css" : "style.css"));
 				$this->footer->replace("{{SWITCHTO}}", "day");
 			}
 		}
@@ -485,5 +459,4 @@ EOF;
 		if (!isset($_SESSION["current_user"]) || !isset($_SESSION["current_ip"]) || !isset($_SESSION["rtoken"]) || (strcmp($_SESSION["rtoken"], \TBcom\Secure($my_password, $pin, true)) != 0))
 			header('Location: login' . $ext);
 	}
-}
-
+};
