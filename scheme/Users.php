@@ -46,9 +46,41 @@ class User {
 		$this->admin = 0;
 	}
 
+	public function getId() { return $this->id; }
+	public function setId($i = 0) { $this->id = $i; }
+	public function getUsername() { return $this->username; }
+	public function setUsername($u = "") { $this->username = $u; }
+	public function getPassword() { return $this->password; }
+	public function setPassword($p = "") { $this->password = $p; }
+	public function getPin() { return $this->pin; }
+	public function setPin($p = "") { $this->pin = $p; }
+	public function getEmail() { return $this->email; }
+	public function setEmail($e = "") { $this->email = $e; }
+	public function isAdmin() { return $this->admin; }
+
+	public function geta(&$arr) {
+		$arr = [
+			"id" => $this->pin,
+			"username" => $this->username,
+			"password" => $this->password,
+			"pin" => $this->pin,
+			"email" => $this->email,
+			"admin" => $this->admin
+		];
+	}
+	public function seta($arr) {
+		foreach ($arr as $k => $v) {
+			if (strcmp($k, "id") == 0) { $this->id = $v; }
+			if (strcmp($k, "username") == 0) { $this->username = $v; }
+			if (strcmp($k, "password") == 0) { $this->password = $v; }
+			if (strcmp($k, "pin") == 0) { $this->pin = $v; }
+			if (strcmp($k, "email") == 0) { $this->email = $v; }
+			if (strcmp($k, "admin") == 0) { $this->admin = $v; }
+		}
+	}
+
 	public function read($i = 0) {
 		global $TheBase;
-		$ext = \TBcom\ext;
 
 		$st = $TheBase->Prepare("SELECT * FROM `users` WHERE `id`=?");
 		if (!($st->bind_param("i", $old_id))) {
@@ -77,7 +109,6 @@ class User {
 
 	public function write() {
 		global $TheBase;
-		$ext = \TBcom\ext;
 
 		$st = $TheBase->Prepare("INSERT INTO `users` VALUES (?, ?, ?, ?, ?, ?)");
 		if (!($st->bind_param("issssi", $prep_id, $prep_uname, $prep_psw, $prep_pin, $prep_email, $prep_admin))) {
@@ -90,6 +121,30 @@ class User {
 		$prep_pin = $this->pin;
 		$prep_email = $this->email;
 		$prep_admin = $this->admin;
+
+		if (!($st->execute())) {
+			$st->close();
+			throw new \TBcom\MySQLFailException();
+		}
+		$st->close();
+		unset($st);
+	}
+
+	public function update($i = 0) {
+		global $TheBase;
+
+		$st = $TheBase->Prepare("UPDATE `users` SET `username`=?, `password`=?, `pin`=?, `email`=?, `admin`=? WHERE `id`=?");
+
+		if (!($st->bind_param("sssssi", $prep_username, $prep_password, $prep_pin, $prep_email, $prep_admin, $prep_id))) {
+			$st->close();
+			throw new \TBcom\MySQLFailException();
+		}
+		$prep_username = $this->username;
+		$prep_password = $this->password;
+		$prep_pin = $this->pin;
+		$prep_email = $this->email;
+		$prep_admin = $this->admin;
+		$prep_id = intval($i);
 
 		if (!($st->execute())) {
 			$st->close();
