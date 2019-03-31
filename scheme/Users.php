@@ -154,7 +154,35 @@ class User {
 		unset($st);
 	}
 
-	public static function table() {
+	public function readUsername($u = "") {
+		global $TheBase;
+
+		$st = $TheBase->Prepare("SELECT * FROM `users` WHERE `username`=?");
+		if (!($st->bind_param("s", $prep_username))) {
+			$st->close();
+			throw new \TBcom\MySQLFailException();
+		}
+		$prep_username = $u;
+		if (!($st->bind_result($s_id, $s_username, $s_password, $s_pin, $s_email, $s_admin))) {
+			$st->close();
+			throw new \TBcom\MySQLFailException("bind_result() failed");
+		}
+		if (!($st->execute())) {
+			$st->close();
+			throw new \TBcom\MySQLFailException("execute() failed");
+		}
+		$st->fetch();
+		$this->id = $s_id;
+		$this->username = $s_username;
+		$this->password = $s_password;
+		$this->pin = $s_pin;
+		$this->email = $s_email;
+		$this->admin = $s_admin;
+		$st->close();
+		unset($st);
+	}
+
+	public static function table($token = "") {
 		global $TheBase;
 		$ext = \TBcom\ext;
 
@@ -180,7 +208,7 @@ class User {
 					<td style="font-size:1.07em"><span class="cc">{$s_pin}</span></td>
 					<td><a href="mailto:{$s_email}">{$s_email}</a></td>
 					<td>{$isadmin}</td>
-					<td><a href="users{$ext}?sett=editor&amp;mode={$s_id}&amp;tok={$_GET['token']}">Edit</a> | <a href="users{$ext}?sett=delete&amp;mode={$s_id}&amp;tok={$_GET['token']}">Delete</a></td>
+					<td><a href="users{$ext}?sett=editor&amp;mode={$s_id}&amp;tok={$token}">Edit</a> | <a href="users{$ext}?sett=delete&amp;mode={$s_id}&amp;tok={$token}">Delete</a></td>
 				</tr>
 EOF;
 		}
@@ -192,7 +220,6 @@ EOF;
 
 	public static function delete($i = 0) {
 		global $TheBase;
-		$ext = \TBcom\ext;
 
 		$st = $TheBase->Prepare("DELETE FROM `users` WHERE `id`=? LIMIT 1");
 		if (!($st->bind_param("i", $old_id))) {
