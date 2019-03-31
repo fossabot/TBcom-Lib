@@ -36,6 +36,10 @@ class Blog extends PostType {
 
 	public function __destruct() {
 		parent::__destruct();
+		unset($this->comp);
+		unset($this->tag);
+		unset($this->title);
+		unset($this->type);
 	}
 
 	public function setTitle($t) { $this->title = $t; }
@@ -180,7 +184,6 @@ class Blog extends PostType {
 
 	public function getRecent() {
 		global $TheBase;
-		$ext = \TBcom\ext;
 
 		$st = $TheBase->Prepare("SELECT * FROM `blog` ORDER BY `id` DESC LIMIT 1");
 		if (!($st->bind_result($b_id, $b_comp, $b_tag, $b_title, $b_format, $b_body)) || !($st->execute())) {
@@ -238,7 +241,7 @@ class Blog extends PostType {
 			}
 			
 			$sAdminRow = (($admin) ?
-				\TBcom\Tag("<span class=\"admin\"><p><a href=\"/admin/blog{{0}}?sett=editor&amp;mode={{1}}{{2}}\">Edit</a> &bull; <a href=\"/admin/blog{{0}}?sett=delete&amp;mode={{1}}{{2}}\">Delete</a> &bull; <a href=\"/admin/blog{{0}}?sett=table{{2}}\">Blog Table</a></p></span>", [
+				\TBcom\Methods::Tag("<span class=\"admin\"><p><a href=\"/admin/blog{{0}}?sett=editor&amp;mode={{1}}{{2}}\">Edit</a> &bull; <a href=\"/admin/blog{{0}}?sett=delete&amp;mode={{1}}{{2}}\">Delete</a> &bull; <a href=\"/admin/blog{{0}}?sett=table{{2}}\">Blog Table</a></p></span>", [
 					$ext, $s_id, $sadmin
 				])
 			: "");

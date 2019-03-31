@@ -33,6 +33,9 @@ class Art extends PostType {
 
 	public function __destruct() {
 		parent::__destruct();
+		unset($this->comp);
+		unset($this->series);
+		unset($this->title);
 	}
 
 	public function getId() { return parent::getId(); }

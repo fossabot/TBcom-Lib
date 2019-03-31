@@ -38,12 +38,12 @@ class User {
 	}
 
 	public function __destruct() {
-		$this->id = 0;
-		$this->username = "";
-		$this->password = "";
-		$this->pin = "";
-		$this->email = "";
-		$this->admin = 0;
+		unset($this->id);
+		unset($this->username);
+		unset($this->password);
+		unset($this->pin);
+		unset($this->email);
+		unset($this->admin);
 	}
 
 	public function getId() { return $this->id; }

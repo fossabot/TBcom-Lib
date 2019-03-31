@@ -45,6 +45,13 @@ class Message extends PostType {
 
 	public function __destruct() {
 		parent::__destruct();
+		unset($this->first);
+		unset($this->last);
+		unset($this->subject);
+		unset($this->email);
+		unset($this->sent);
+		unset($this->useragent);
+		unset($this->portfolio);
 	}
 
 	public function getName() { return $this->first . " " . $this->last; }
@@ -85,6 +92,8 @@ class Message extends PostType {
 	}
 
 	public function read($i = 0) {
+		global $TheBase;
+
 		$st = $TheBase->Prepare("SELECT * FROM `messages` WHERE `id`=?");
 		if (!($st->bind_param("i", $old_id))) {
 			$st->close();
@@ -116,6 +125,8 @@ class Message extends PostType {
 	}
 
 	public function write() {
+		global $TheBase;
+
 		$st = $TheBase->Prepare("INSERT INTO `messages` VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, FALSE)");
 		if (!($st->bind_param("issssss", $prep_id, $prep_first, $prep_last, $prep_subject, $prep_email, $prep_body, $prep_useragent))) {
 			$st->close();
@@ -138,6 +149,8 @@ class Message extends PostType {
 	}
 
 	public static function delete($i = 0) {
+		global $TheBase;
+
 		$i = intval($i);
 
 		$st = $TheBase->Prepare("DELETE FROM `messages` WHERE `id`=?");
@@ -168,6 +181,9 @@ class Message extends PostType {
 	}
 
 	public static function table($token = "") {
+		global $TheBase;
+		$ext = \TBcom\ext;
+
 		$st = $TheBase->Prepare("SELECT * FROM `messages` ORDER BY `id`");
 		if (!($st->bind_result($s_id, $s_first, $s_last, $s_subject, $s_email, $s_body, $s_date, $s_useragent, $s_port))) {
 			$st->close();
@@ -180,16 +196,21 @@ class Message extends PostType {
 		$output = "";
 
 		while ($st->fetch()) {
-			$output .= "\t\t" . Tag("<tr>\n\t\t\t<td>{{0}}</td>\n\t\t\t<td><a href=\"mailto:{{1}}\">{{2}} {{3}}</a></td>\n" .
-				"\t\t\t<td><a href=\"mailto:{{1}}\">{{1}}</a></td>\n" .
-				"\t\t\t<td><a href=\"messages{{4}}?id={{0}}&amp;tok={{5}}\">{{6}}</a></td>\n" .
-				"\t\t\t<td>{{7}}</td>\n\t\t\t<td>{{8}}</td>\n\t\t</tr>\n", [
-				$s_id, $s_email, $s_first, $s_last, $ext, $messages->getToken(), substr($s_subject, 0, 130),
-				$s_date, (($s_port) ? "Yes" : "No")
-			]);
+			$subSubject = substr($s_subject, 0, 130);
+			$isPort = (($s_port) ? "Yes" : "No");
+			$output .= <<<EOF
+			<tr>
+				<td>{$s_id}</td>
+				<td><a href="mailto:{$s_email}">{$s_first} {$s_last}</a></td>
+				<td><a href="messages{$ext}?id={$s_id}&amp;tok={$messages->getToken()}">{$subSubject}</a></td>
+				<td>{$s_date}</td>
+				<td>{$isPort}</td>
+			</tr>
+EOF;
 		}
 		$st->close();
 		unset($st);
+		unset($subSubject);
 		return $output;
 	}
 };

@@ -67,46 +67,48 @@ class MySQLFailException extends \Exception {
 	}
 };
 
-function Tag($plchold, $optsArray) {
-	$x = 0;
-	foreach ($optsArray as $v) {
-		$plchold = str_replace("{{{$x}}}", $v, $plchold);
-		$x++;
+class Methods {
+	public static function Tag($plchold, $optsArray) {
+		$x = 0;
+		foreach ($optsArray as $v) {
+			$plchold = str_replace("{{{$x}}}", $v, $plchold);
+			$x++;
+		}
+		return $plchold;
 	}
-	return $plchold;
-}
 
-function Secure($pass, $pin, $rev = false) {
-	if ($rev)
-		return strrev(hash("sha256", $pass) . hash("sha256", ($pin . $pin)));
-	else
-		return hash("sha256", $pass) . hash("sha256", ($pin . $pin));
-}
-
-function CSRFSecure($agent) {
-	return hash("sha256", ($agent . "aJKFmagic"));
-}
-
-function Snip($beginning, $end, $string) {
-	$beginningPos = strpos($string, $beginning);
-	$endPos = strpos($string, $end);
-	if ($beginningPos === false || $endPos === false) {
-		return $string;
+	public static function Secure($pass, $pin, $rev = false) {
+		if ($rev)
+			return strrev(hash("sha256", $pass) . hash("sha256", ($pin . $pin)));
+		else
+			return hash("sha256", $pass) . hash("sha256", ($pin . $pin));
 	}
-	$textToDelete = substr($string, $beginningPos, ($endPos + strlen($end)) - $beginningPos);
-	return str_replace($textToDelete, "", $string);
-}
 
-function filesFind($path, $reg) {
-	$dir = $path;
-	$c = glob($dir . "*." . $reg, GLOB_BRACE);
-	return count($c);
-}
-
-function Cache($file) {
-	if (!opcache_is_script_cached($file)) {
-		opcache_compile_file($file);
+	public static function CSRFSecure($agent) {
+		return hash("sha256", ($agent . "aJKFmagic"));
 	}
-}
 
-Cache(__FILE__);
+	public static function Snip($beginning, $end, $string) {
+		$beginningPos = strpos($string, $beginning);
+		$endPos = strpos($string, $end);
+		if ($beginningPos === false || $endPos === false) {
+			return $string;
+		}
+		$textToDelete = substr($string, $beginningPos, ($endPos + strlen($end)) - $beginningPos);
+		return str_replace($textToDelete, "", $string);
+	}
+
+	public static function filesFind($path, $reg) {
+		$dir = $path;
+		$c = glob($dir . "*." . $reg, GLOB_BRACE);
+		return count($c);
+	}
+
+	public static function Cache($file) {
+		if (!opcache_is_script_cached($file)) {
+			opcache_compile_file($file);
+		}
+	}
+};
+
+Methods::Cache(__FILE__);

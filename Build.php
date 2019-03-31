@@ -121,7 +121,7 @@ class Header extends ContentSection {
 		$bcOut = "";
 		$pos = 1;
 		foreach ($bcArray as $k => $v) {
-			$bcOut .= \TBcom\Tag(file_get_contents(__DIR__ . "/../views/breadcrumb.html"), [ $v, $k, $pos ]);
+			$bcOut .= \TBcom\Methods::Tag(file_get_contents(__DIR__ . "/../views/breadcrumb.html"), [ $v, $k, $pos ]);
 			$pos++;
 		}
 		$this->replace("{{BREADCRUMBS}}", $bcOut);
@@ -315,7 +315,7 @@ EOF;
 				$foot .= <<<EOF
 				<script type="text/javascript" async src="/assets/js/art_view.min.js"></script>
 EOF;
-				$this->setFooter(\TBcom\Snip("</body>", "</html>", $this->getFooter()));
+				$this->setFooter(\TBcom\Methods::Snip("</body>", "</html>", $this->getFooter()));
 				$this->footer->append($foot);
 				$this->footer->append("\n\t</body>\n</html>\n");
 				break;
@@ -332,7 +332,7 @@ EOF;
 				$foot .= <<<EOF
 				<script type="text/javascript" async src="/assets/js/art_index.min.js"></script>
 EOF;
-				$this->setFooter(\TBcom\Snip("</body>", "</html>", $this->getFooter()));
+				$this->setFooter(\TBcom\Methods::Snip("</body>", "</html>", $this->getFooter()));
 				$this->footer->append($foot);
 				$this->footer->append("\n\t</body>\n</html>\n");
 				break;
@@ -347,7 +347,7 @@ EOF;
 				$foot .= <<<EOF
 				<script type="text/javascript" async src="/assets/js/blog.min.js"></script>
 EOF;
-				$this->setFooter(\TBcom\Snip("</body>", "</html>", $this->getFooter()));
+				$this->setFooter(\TBcom\Methods::Snip("</body>", "</html>", $this->getFooter()));
 				$this->footer->append($foot);
 				$this->footer->append("\n\t</body>\n</html>\n");
 				break;
@@ -363,7 +363,7 @@ EOF;
 				$foot .= <<<EOF
 				<script type="text/javascript" src="/assets/js/music_view.min.js"></script>
 EOF;
-				$this->setFooter(\TBcom\Snip("</body>", "</html>", $this->getFooter()));
+				$this->setFooter(\TBcom\Methods::Snip("</body>", "</html>", $this->getFooter()));
 				$this->footer->append($foot);
 				$this->footer->append("\n\t</body>\n</html>\n");
 				break;
@@ -444,7 +444,7 @@ EOF;
 		$pin = file_get_contents(__DIR__ . "/../../admin/resources/pin.txt");
 		if (!$pin)
 			die("No PIN file found for hashing. Please populate");
-		return ((isset($_GET['tok'])) && (isset($_SESSION["current_user"])) && (isset($_SESSION["rtoken"])) && (strcmp($_GET['tok'], \TBcom\Secure($my_password, $pin)) == 0) && (strcmp($_SESSION["rtoken"], \TBcom\Secure($my_password, $pin, true)) == 0));
+		return ((isset($_GET['tok'])) && (isset($_SESSION["current_user"])) && (isset($_SESSION["rtoken"])) && (strcmp($_GET['tok'], \TBcom\Methods::Secure($my_password, $pin)) == 0) && (strcmp($_SESSION["rtoken"], \TBcom\Methods::Secure($my_password, $pin, true)) == 0));
 	}
 
 	public static function adminSecurity() {
@@ -454,9 +454,9 @@ EOF;
 		if (!$pin)
 			die("No PIN file found for hashing. Please populate");
 
-		if ((!isset($_GET['tok'])) || (strcmp($_GET['tok'], \TBcom\Secure($my_password, $pin)) != 0))
+		if ((!isset($_GET['tok'])) || (strcmp($_GET['tok'], \TBcom\Methods::Secure($my_password, $pin)) != 0))
 			header('Location: login' . $ext);
-		if (!isset($_SESSION["current_user"]) || !isset($_SESSION["current_ip"]) || !isset($_SESSION["rtoken"]) || (strcmp($_SESSION["rtoken"], \TBcom\Secure($my_password, $pin, true)) != 0))
+		if (!isset($_SESSION["current_user"]) || !isset($_SESSION["current_ip"]) || !isset($_SESSION["rtoken"]) || (strcmp($_SESSION["rtoken"], \TBcom\Methods::Secure($my_password, $pin, true)) != 0))
 			header('Location: login' . $ext);
 	}
 };
