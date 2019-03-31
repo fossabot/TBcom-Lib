@@ -400,7 +400,6 @@ EOF;
 		if (!$result) {
 			throw new \TBcom\MySQLFailException("Query failed");
 		}
-		$result->free();
 		unset($result);
 	}
 };
