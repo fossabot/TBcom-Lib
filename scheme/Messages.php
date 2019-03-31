@@ -221,19 +221,19 @@ EOF;
 		if (!$result) {
 			throw new \TBcom\MySQLFailException("Query failed");
 		}
-		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `first` `first` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The author\'s first name.'");
+		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `first` `first` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The authors first name.'");
 		if (!$result) {
 			throw new \TBcom\MySQLFailException("Query failed");
 		}
-		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `last` `last` VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The author\'s last name.'");
+		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `last` `last` VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The authors last name.'");
 		if (!$result) {
 			throw new \TBcom\MySQLFailException("Query failed");
 		}
-		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `subject` `subject` VARCHAR(140) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The subject line, or \"website\" on the portfolio form.'");
+		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `subject` `subject` VARCHAR(140) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The subject line, or website on the portfolio form.'");
 		if (!$result) {
 			throw new \TBcom\MySQLFailException("Query failed");
 		}
-		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `email` `email` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The author\'s email address.");
+		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `email` `email` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The authors email address.");
 		if (!$result) {
 			throw new \TBcom\MySQLFailException("Query failed");
 		}
@@ -245,7 +245,7 @@ EOF;
 		if (!$result) {
 			throw new \TBcom\MySQLFailException("Query failed");
 		}
-		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `useragent` `useragent` VARCHAR(300) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The author\'s user agent.'");
+		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `useragent` `useragent` VARCHAR(300) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The authors user agent.'");
 		if (!$result) {
 			throw new \TBcom\MySQLFailException("Query failed");
 		}
