@@ -118,7 +118,7 @@ class Message extends PostType {
 		$this->email = $s_email;
 		$this->sent = $s_date;
 		$this->useragent = $s_useragent;
-		$this->portfolio = $s_portfolio;
+		$this->portfolio = $s_port;
 
 		$st->close();
 		unset($st);
@@ -202,6 +202,7 @@ class Message extends PostType {
 			<tr>
 				<td>{$s_id}</td>
 				<td><a href="mailto:{$s_email}">{$s_first} {$s_last}</a></td>
+				<td>{$s_email}</td>
 				<td><a href="messages{$ext}?id={$s_id}&amp;tok={$token}">{$subSubject}</a></td>
 				<td>{$s_date}</td>
 				<td>{$isPort}</td>
