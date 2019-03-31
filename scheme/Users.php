@@ -60,7 +60,7 @@ class User {
 
 	public function geta(&$arr) {
 		$arr = [
-			"id" => $this->pin,
+			"id" => $this->id,
 			"username" => $this->username,
 			"password" => $this->password,
 			"pin" => $this->pin,
