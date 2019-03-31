@@ -167,7 +167,7 @@ class Art extends PostType {
 				throw new \TBcom\MySQLFailException();
 			}
 		}
-		$fdescript = filter_var($thepost->getBody(), FILTER_SANITIZE_SPECIAL_CHARS);
+		$fdescript = filter_var($this->getBody(), FILTER_SANITIZE_SPECIAL_CHARS);
 
 		$prep_id = $this->getId();
 		$prep_series = $this->series;
