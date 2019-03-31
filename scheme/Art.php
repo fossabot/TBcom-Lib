@@ -74,6 +74,8 @@ class Art extends PostType {
 	}
 
 	public function write() {
+		global $TheBase;
+
 		if (isset($this->title)) {
 			$ftitle = filter_var($this->title, FILTER_SANITIZE_SPECIAL_CHARS);
 
@@ -142,6 +144,8 @@ class Art extends PostType {
 	}
 
 	public function update($s = "", $i = 0) {
+		global $TheBase;
+
 		if (!$s || $i == 0) {
 			throw new \TBcom\NotFoundException();
 		}
