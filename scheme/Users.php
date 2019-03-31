@@ -247,4 +247,34 @@ EOF;
 		unset($st);
 	}
 
+	public static function writeTableComments() {
+		global $TheBase;
+
+		$result = $TheBase->Query("ALTER TABLE `users` CHANGE `id` `id` INT(11) NULL DEFAULT NULL COMMENT 'The ID number for this user.'");
+		if (!$result) {
+			throw new \TBcom\MySQLFailException("Query failed");
+		}
+		$result = $TheBase->Query("ALTER TABLE `users` CHANGE `username` `username` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The user\'s username.'");
+		if (!$result) {
+			throw new \TBcom\MySQLFailException("Query failed");
+		}
+		$result = $TheBase->Query("ALTER TABLE `users` CHANGE `password` `password` VARCHAR(65) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '64-digit SHA256 hash of the user\'s password.'");
+		if (!$result) {
+			throw new \TBcom\MySQLFailException("Query failed");
+		}
+		$result = $TheBase->Query("ALTER TABLE `users` CHANGE `pin` `pin` VARCHAR(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'Six-digit PIN for logging in.'");
+		if (!$result) {
+			throw new \TBcom\MySQLFailException("Query failed");
+		}
+		$result = $TheBase->Query("ALTER TABLE `users` CHANGE `email` `email` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The user\'s email address.");
+		if (!$result) {
+			throw new \TBcom\MySQLFailException("Query failed");
+		}
+		$result = $TheBase->Query("ALTER TABLE `users` CHANGE `admin` `admin` TINYINT(1) NULL DEFAULT NULL COMMENT 'Whether the user is an admin or not.'");
+		if (!$result) {
+			throw new \TBcom\MySQLFailException("Query failed");
+		}
+
+		unset($result);
+	}
 };

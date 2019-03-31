@@ -213,4 +213,47 @@ EOF;
 		unset($subSubject);
 		return $output;
 	}
+
+	public static function writeTableComments() {
+		global $TheBase;
+
+		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `id` `id` INT(11) NULL DEFAULT NULL COMMENT 'The ID of the message.'");
+		if (!$result) {
+			throw new \TBcom\MySQLFailException("Query failed");
+		}
+		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `first` `first` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The author\'s first name.'");
+		if (!$result) {
+			throw new \TBcom\MySQLFailException("Query failed");
+		}
+		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `last` `last` VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The author\'s last name.'");
+		if (!$result) {
+			throw new \TBcom\MySQLFailException("Query failed");
+		}
+		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `subject` `subject` VARCHAR(140) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The subject line, or \"website\" on the portfolio form.'");
+		if (!$result) {
+			throw new \TBcom\MySQLFailException("Query failed");
+		}
+		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `email` `email` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The author\'s email address.");
+		if (!$result) {
+			throw new \TBcom\MySQLFailException("Query failed");
+		}
+		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `body` `body` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The body of the message.'");
+		if (!$result) {
+			throw new \TBcom\MySQLFailException("Query failed");
+		}
+		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `sent` `sent` DATE NULL DEFAULT NULL COMMENT 'The subject line, or \"website\" on the portfolio form.'");
+		if (!$result) {
+			throw new \TBcom\MySQLFailException("Query failed");
+		}
+		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `useragent` `useragent` VARCHAR(300) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The author\'s user agent.'");
+		if (!$result) {
+			throw new \TBcom\MySQLFailException("Query failed");
+		}
+		$result = $TheBase->Query("ALTER TABLE `messages` CHANGE `portfolio` `portfolio` TINYINT(1) NULL DEFAULT NULL COMMENT 'Whether the message came from the portfolio or the main site.'");
+		if (!$result) {
+			throw new \TBcom\MySQLFailException("Query failed");
+		}
+
+		unset($result);
+	}
 };
