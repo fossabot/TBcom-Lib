@@ -202,7 +202,7 @@ class Message extends PostType {
 			<tr>
 				<td>{$s_id}</td>
 				<td><a href="mailto:{$s_email}">{$s_first} {$s_last}</a></td>
-				<td><a href="messages{$ext}?id={$s_id}&amp;tok={$messages->getToken()}">{$subSubject}</a></td>
+				<td><a href="messages{$ext}?id={$s_id}&amp;tok={$token}">{$subSubject}</a></td>
 				<td>{$s_date}</td>
 				<td>{$isPort}</td>
 			</tr>
