@@ -124,10 +124,12 @@ class Message extends PostType {
 		unset($st);
 	}
 
-	public function write() {
+	public function write($port = false) {
 		global $TheBase;
 
-		$st = $TheBase->Prepare("INSERT INTO `messages` VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, FALSE)");
+		$x = (($port) ? "TRUE" : "FALSE");
+
+		$st = $TheBase->Prepare("INSERT INTO `messages` VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, " . $x . ")");
 		if (!($st->bind_param("issssss", $prep_id, $prep_first, $prep_last, $prep_subject, $prep_email, $prep_body, $prep_useragent))) {
 			$st->close();
 			throw new \TBcom\MySQLFailException();
