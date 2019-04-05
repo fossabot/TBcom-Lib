@@ -54,10 +54,10 @@ class ContentSection {
 
 	public function load($filename) {
 		try {
-			if (!file_exists($filename . ".html")) {
+			if (!file_exists($filename . ".php")) {
 				throw new \TBcom\NoHeaderException();
 			}
-			$this->content = file_get_contents($filename . ".html");
+			$this->content = file_get_contents($filename . ".php");
 		} catch (\TBcom\NoHeaderException $ex) {
 			header('Location: /error' . \TBcom\ext . '?e=404');
 		}
@@ -86,17 +86,9 @@ class Header extends ContentSection {
 		$this->replace("TITLE", $this->title);
 	}
 
-	public function getTitle() {
-		return $this->title;
-	}
-
-	public function keywords($k = "") {
-		$this->replace("KEYWORDS", $k);
-	}
-
-	public function description($d = "") {
-		$this->replace("META_DESCRIPTION", $d);
-	}
+	public function getTitle() { return $this->title; }
+	public function keywords($k = "") { $this->replace("KEYWORDS", $k); }
+	public function description($d = "") { $this->replace("META_DESCRIPTION", $d); }
 
 	public function ogImage($url) {
 		$w = @\getimagesize($url)[0];
