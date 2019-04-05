@@ -7,6 +7,8 @@
  * This software is licensed under the terms of the MIT License. See LICENSE for details.
 */
 namespace TBcom\Build;
+use TBcom\Codes as C;
+use TBcom\Methods as M;
 
 class ContentSection {
 	private $content;
@@ -14,50 +16,39 @@ class ContentSection {
 	public function __construct($filename) {
 		$parts = explode(".", $filename);
 		if (@!$parts[1]) {
-			if (!file_exists(__DIR__ . "/../views/" . $parts[0] . ".html")) {
+			if (!file_exists(__DIR__ . "/../views/" . $parts[0] . ".php")) {
 				$this->content = "";
 			}
 			else {
-				$this->content = file_get_contents(__DIR__ . "/../views/" . $parts[0] . ".html");
+				$this->content = file_get_contents(__DIR__ . "/../views/" . $parts[0] . ".php");
 			}
 		}
 		else {
-			if (!file_exists(__DIR__ . "/../../" . $parts[0] . "/resources/views/" . $parts[1] . ".html")) {
+			if (!file_exists(__DIR__ . "/../../" . $parts[0] . "/resources/views/" . $parts[1] . ".php")) {
 				$this->content = "";
 			}
 			else {
-				$this->content = file_get_contents(__DIR__ . "/../../" . $parts[0] . "/resources/views/" . $parts[1] . ".html");
+				$this->content = file_get_contents(__DIR__ . "/../../" . $parts[0] . "/resources/views/" . $parts[1] . ".php");
 			}
 		}
 	}
 
 	public function __destruct() {
-		$this->content = "";
+		unset($this->content);
 	}
 
-	public function set($data) {
-		$this->content = $data;
-	}
-
-	public function get() {
-		return $this->content;
-	}
-
-	public function append($data) {
-		$this->content .= $data;
-	}
-
-	public function prepend($data) {
-		$this->content = $data . $this->content;
-	}
+	public function set($data) { $this->content = $data; }
+	public function get() { return $this->content; }
+	public function append($data) { $this->content .= $data; }
+	public function prepend($data) { $this->content = $data . $this->content; }
 
 	public function replace($plchold, $val = "") {
-		$this->content = str_replace($plchold, $val, $this->content);
+		$this->content = str_replace("{{" . $plchold . "}}", $val, $this->content);
 	}
 
 	public function replacea($repArr) {
 		foreach ($repArr as $plchold => $val) {
-			$this->replace($plchold, $val);
+			$this->replace("{{" . $plchold . "}}", $val);
 		}
 	}
 
@@ -87,12 +78,12 @@ class Header extends ContentSection {
 
 	public function __destruct() {
 		parent::__destruct();
-		$this->title = "";
+		unset($this->title);
 	}
 
 	public function setTitle($t) {
 		$this->title = $t;
-		$this->replace("{{TITLE}}", $this->title);
+		$this->replace("TITLE", $this->title);
 	}
 
 	public function getTitle() {
@@ -100,20 +91,20 @@ class Header extends ContentSection {
 	}
 
 	public function keywords($k = "") {
-		$this->replace("{{KEYWORDS}}", $k);
+		$this->replace("KEYWORDS", $k);
 	}
 
 	public function description($d = "") {
-		$this->replace("{{META_DESCRIPTION}}", $d);
+		$this->replace("META_DESCRIPTION", $d);
 	}
 
 	public function ogImage($url) {
 		$w = @\getimagesize($url)[0];
 		$h = @\getimagesize($url)[1];
 		$this->replacea([
-			"{{OG_IMAGE}}" => $url,
-			"{{OG_WIDTH}}" => "" . $w,
-			"{{OG_HEIGHT}}" => "" . $h
+			"OG_IMAGE" => $url,
+			"OG_WIDTH" => "" . $w,
+			"OG_HEIGHT" => "" . $h
 		]);
 	}
 	
@@ -121,10 +112,10 @@ class Header extends ContentSection {
 		$bcOut = "";
 		$pos = 1;
 		foreach ($bcArray as $k => $v) {
-			$bcOut .= \TBcom\Methods::Tag(file_get_contents(__DIR__ . "/../views/breadcrumb.html"), [ $v, $k, $pos ]);
+			$bcOut .= M::Tag(file_get_contents(__DIR__ . "/../views/breadcrumb.php"), [ $v, $k, $pos ]);
 			$pos++;
 		}
-		$this->replace("{{BREADCRUMBS}}", $bcOut);
+		$this->replace("BREADCRUMBS", $bcOut);
 	}
 };
 
@@ -185,6 +176,15 @@ class Page {
 		$this->token = $_GET['tok'] ?? null;
 	}
 
+	public function __destruct() {
+		unset($this->header);
+		unset($this->middle);
+		unset($this->footer);
+		unset($this->start);
+		unset($this->end);
+		unset($this->token);
+	}
+
 	public function setPageCode($p) {
 		try {
 			if (($p > 40) && (!$this->token))
@@ -196,9 +196,7 @@ class Page {
 			header('Location: /error' . \TBcom\ext . '?e=403');
 		}
 	}
-	public function getPageCode() {
-		return $this->pagecode;
-	}
+	public function getPageCode() { return $this->pagecode; }
 
 	public function init($t, $des, $c = null) {
 		$this->header->setTitle($t);
@@ -233,11 +231,11 @@ class Page {
 
 	public function recent($cont) {
 		try {
-			if (($this->pagecode >= \TBcom\Codes\ArtMain) && ($this->pagecode <= \TBcom\Codes\ArtGallery))
+			if (($this->pagecode >= C\ArtMain) && ($this->pagecode <= C\ArtGallery))
 				$f = "log/art.txt";
-			else if (($this->pagecode >= \TBcom\Codes\BlogMain) && ($this->pagecode <= \TBcom\Codes\BlogDelete))
+			else if (($this->pagecode >= C\BlogMain) && ($this->pagecode <= C\BlogDelete))
 				$f = "log/blog.txt";
-			else if (($this->pagecode >= \TBcom\Codes\OpinionsMain) && ($this->pagecode <= \TBcom\Codes\OpinionsDelete))
+			else if (($this->pagecode >= C\OpinionsMain) && ($this->pagecode <= C\OpinionsDelete))
 				$f = "log/opinions.txt";
 			if (file_put_contents($f, $cont) === FALSE)
 				throw new \TBcom\NoHeaderException();
@@ -250,8 +248,8 @@ class Page {
 	public function output() {
 		$sinit = "";
 		switch ($this->pagecode) {
-			case \TBcom\Codes\ArtEditor: case \TBcom\Codes\BlogEditor: case \TBcom\Codes\OpinionsEditor: case \TBcom\Codes\AdminLog: case \TBcom\Codes\UsersEditor:
-			case \TBcom\Codes\VisitorLog:
+			case C\ArtEditor: case C\BlogEditor: case C\OpinionsEditor: case C\AdminLog: case C\UsersEditor:
+			case C\VisitorLog:
 				$sinit .= "\n";
 				$sinit .= <<<EOF
 		</script>
@@ -260,7 +258,7 @@ class Page {
 		<script src="/node_modules/vue-resource/dist/vue-resource.min.js">
 EOF;
 				break;
-			case \TBcom\Codes\RateMedia:
+			case C\RateMedia:
 				$sinit .= "\n";
 				$sinit .= <<<EOF
 		</script>
@@ -268,7 +266,7 @@ EOF;
 		<script src="/node_modules/vue-resource/dist/vue-resource.min.js">
 EOF;
 				break;
-			case \TBcom\Codes\OpinionGen:
+			case C\OpinionGen:
 				$sinit .= "\n";
 				$sinit .= <<<EOF
 		</script>
@@ -279,7 +277,7 @@ EOF;
 		<script src="/node_modules/vue-resource/dist/vue-resource.min.js">
 EOF;
 				break;
-			case \TBcom\Codes\Contact: case \TBcom\Codes\PortfolioContact:
+			case C\Contact: case C\PortfolioContact:
 				$sinit .= "\n";
 				$sinit .= <<<EOF
 		</script>
@@ -288,7 +286,7 @@ EOF;
 		<script src="/node_modules/vue-resource/dist/vue-resource.min.js">
 EOF;
 				break;
-			case \TBcom\Codes\TextEditor:
+			case C\TextEditor:
 				$sinit .= "\n";
 				$sinit .= <<<EOF
 		</script>
@@ -296,7 +294,7 @@ EOF;
 		<script type="text/javascript" src="/admin/assets/js/text_editor.min.js">
 EOF;
 				break;
-			case \TBcom\Codes\Photos:
+			case C\Photos:
 				$sinit .= "\n";
 				$sinit .= <<<EOF
 			</script>
@@ -304,7 +302,7 @@ EOF;
 			<script type="text/javascript" src="../assets/js/cycle.min.js">
 EOF;
 				break;
-			case \TBcom\Codes\ArtView:
+			case C\ArtView:
 				$sinit .= "\n";
 				$sinit .= <<<EOF
 		</script>
@@ -315,11 +313,11 @@ EOF;
 				$foot .= <<<EOF
 				<script type="text/javascript" async src="/assets/js/art_view.min.js"></script>
 EOF;
-				$this->setFooter(\TBcom\Methods::Snip("</body>", "</html>", $this->getFooter()));
+				$this->setFooter(M::Snip("</body>", "</html>", $this->getFooter()));
 				$this->footer->append($foot);
 				$this->footer->append("\n\t</body>\n</html>\n");
 				break;
-			case \TBcom\Codes\ArtIndex: case \TBcom\Codes\ArtGallery:
+			case C\ArtIndex: case C\ArtGallery:
 				$sinit .= "\n";
 				$sinit .= <<<EOF
 		</script>
@@ -332,11 +330,11 @@ EOF;
 				$foot .= <<<EOF
 				<script type="text/javascript" async src="/assets/js/art_index.min.js"></script>
 EOF;
-				$this->setFooter(\TBcom\Methods::Snip("</body>", "</html>", $this->getFooter()));
+				$this->setFooter(M::Snip("</body>", "</html>", $this->getFooter()));
 				$this->footer->append($foot);
 				$this->footer->append("\n\t</body>\n</html>\n");
 				break;
-			case \TBcom\Codes\BlogIndex: case \TBcom\Codes\BlogView: case \TBcom\Codes\BlogGallery:
+			case C\BlogIndex: case C\BlogView: case C\BlogGallery:
 				$sinit .= "\n";
 				$sinit .= <<<EOF
 		</script>
@@ -347,11 +345,11 @@ EOF;
 				$foot .= <<<EOF
 				<script type="text/javascript" async src="/assets/js/blog.min.js"></script>
 EOF;
-				$this->setFooter(\TBcom\Methods::Snip("</body>", "</html>", $this->getFooter()));
+				$this->setFooter(M::Snip("</body>", "</html>", $this->getFooter()));
 				$this->footer->append($foot);
 				$this->footer->append("\n\t</body>\n</html>\n");
 				break;
-			case \TBcom\Codes\MusicView:
+			case C\MusicView:
 				$sinit .= "\n";
 				$sinit .= <<<EOF
 		</script>
@@ -363,7 +361,7 @@ EOF;
 				$foot .= <<<EOF
 				<script type="text/javascript" src="/assets/js/music_view.min.js"></script>
 EOF;
-				$this->setFooter(\TBcom\Methods::Snip("</body>", "</html>", $this->getFooter()));
+				$this->setFooter(M::Snip("</body>", "</html>", $this->getFooter()));
 				$this->footer->append($foot);
 				$this->footer->append("\n\t</body>\n</html>\n");
 				break;
@@ -374,63 +372,63 @@ EOF;
 		$hour = date("H", mktime());
 
 		if ($this->pagecode > 40) {
-			$this->header->replace("{{STYLE}}", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "admin_linux.css" : "admin.css"));
+			$this->header->replace("STYLE", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "admin_linux.css" : "admin.css"));
 		}
 
 		if (isset($_SESSION["style"])) {
 			if (strcmp($_SESSION["style"], "day") == 0) {
-				$this->header->replace("{{STYLE}}", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "daytime_linux.css" : "daytime.css"));
-				$this->footer->replace("{{SWITCHTO}}", "night");
+				$this->header->replace("STYLE", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "daytime_linux.css" : "daytime.css"));
+				$this->footer->replace("SWITCHTO", "night");
 			}
 			else {
-				$this->header->replace("{{STYLE}}", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "style_linux.css" : "style.css"));
-				$this->footer->replace("{{SWITCHTO}}", "day");
+				$this->header->replace("STYLE", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "style_linux.css" : "style.css"));
+				$this->footer->replace("SWITCHTO", "day");
 			}
 		}
 		else {
 			if ((intval($hour) >= 9) && (intval($hour) <= 19)) {
-				$this->header->replace("{{STYLE}}", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "daytime_linux.css" : "daytime.css"));
-				$this->footer->replace("{{SWITCHTO}}", "night");
+				$this->header->replace("STYLE", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "daytime_linux.css" : "daytime.css"));
+				$this->footer->replace("SWITCHTO", "night");
 			}
 			else {
-				$this->header->replace("{{STYLE}}", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "style_linux.css" : "style.css"));
-				$this->footer->replace("{{SWITCHTO}}", "day");
+				$this->header->replace("STYLE", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "style_linux.css" : "style.css"));
+				$this->footer->replace("SWITCHTO", "day");
 			}
 		}
-		$this->footer->replace("{{CURRENT_YEAR}}", date("Y", mktime()));
+		$this->footer->replace("CURRENT_YEAR", date("Y", mktime()));
 		$this->end = microtime(true);
 		$this->footer->replacea([
-			"{{MEMORY_TECH}}" => memory_get_usage(),
-			"{{TIME_TECH}}" => round(($this->end - $this->start), 13),
-			"{{OUTPUT_TECH}}" => strlen($this->header->get() . $this->middle->get() . $this->footer->get())
+			"MEMORY_TECH" => memory_get_usage(),
+			"TIME_TECH" => round(($this->end - $this->start), 13),
+			"OUTPUT_TECH" => strlen($this->header->get() . $this->middle->get() . $this->footer->get())
 		]);
 
-		$this->header->replace("{{TOKEN}}", $this->token);
+		$this->header->replace("TOKEN", $this->token);
 		if (strpos($this->header->getTitle(), "Text Editing ") === FALSE)
-			$this->middle->replace("{{TOKEN}}", $this->token);
+			$this->middle->replace("TOKEN", $this->token);
 		$this->header->replacea([
-			"{{BREADCRUMBS}}" => "",
-			"{{SCRIPT_INIT}}" => $sinit ?? "",
-			"{{THOUGHTS_STYLE}}" => "display:none;"
+			"BREADCRUMBS" => "",
+			"SCRIPT_INIT" => $sinit ?? "",
+			"THOUGHTS_STYLE" => "display:none;"
 		]);
 		$this->header->keywords();
 		$this->header->ogImage("http://tannerbabcock.com/images/ogimage.png");
 
-		$this->header->replace("{{EXT}}", \TBcom\ext ?? "");
-		$this->middle->replace("{{EXT}}", \TBcom\ext ?? "");
-		$this->footer->replace("{{EXT}}", \TBcom\ext ?? "");
+		$this->header->replace("EXT", \TBcom\ext ?? "");
+		$this->middle->replace("EXT", \TBcom\ext ?? "");
+		$this->footer->replace("EXT", \TBcom\ext ?? "");
 
-		if ($this->pagecode == \TBcom\Codes\MusicView)
-			$this->header->replace("{{OG_TYPE}}", "music");
+		if ($this->pagecode == C\MusicView)
+			$this->header->replace("OG_TYPE", "music");
 
-		if ($this->pagecode == \TBcom\Codes\BlogView || $this->pagecode == \TBcom\Codes\OpinionsList || $this->pagecode == \TBcom\Codes\RateMediaView)
-			$this->header->replace("{{OG_TYPE}}", "article");
+		if ($this->pagecode == C\BlogView || $this->pagecode == C\OpinionsList || $this->pagecode == C\RateMediaView)
+			$this->header->replace("OG_TYPE", "article");
 		else
-			$this->header->replace("{{OG_TYPE}}", "website");
+			$this->header->replace("OG_TYPE", "website");
 
 		if (($this->token) && (isset($_SESSION["current_user"])) && (isset($_SESSION["current_ip"]))) {
-			$this->header->replace("{{CURRENT_USER}}", $_SESSION["current_user"]);
-			$this->middle->replace("{{CURRENT_IP}}", $_SESSION["current_ip"]);
+			$this->header->replace("CURRENT_USER", $_SESSION["current_user"]);
+			$this->middle->replace("CURRENT_IP", $_SESSION["current_ip"]);
 		}
 
 		$this->header->output();
@@ -444,7 +442,7 @@ EOF;
 		$pin = file_get_contents(__DIR__ . "/../../admin/resources/pin.txt");
 		if (!$pin)
 			die("No PIN file found for hashing. Please populate");
-		return ((isset($_GET['tok'])) && (isset($_SESSION["current_user"])) && (isset($_SESSION["rtoken"])) && (strcmp($_GET['tok'], \TBcom\Methods::Secure($my_password, $pin)) == 0) && (strcmp($_SESSION["rtoken"], \TBcom\Methods::Secure($my_password, $pin, true)) == 0));
+		return ((isset($_GET['tok'])) && (isset($_SESSION["current_user"])) && (isset($_SESSION["rtoken"])) && (strcmp($_GET['tok'], M::Secure($my_password, $pin)) == 0) && (strcmp($_SESSION["rtoken"], M::Secure($my_password, $pin, true)) == 0));
 	}
 
 	public static function adminSecurity() {
@@ -454,9 +452,9 @@ EOF;
 		if (!$pin)
 			die("No PIN file found for hashing. Please populate");
 
-		if ((!isset($_GET['tok'])) || (strcmp($_GET['tok'], \TBcom\Methods::Secure($my_password, $pin)) != 0))
+		if ((!isset($_GET['tok'])) || (strcmp($_GET['tok'], M::Secure($my_password, $pin)) != 0))
 			header('Location: login' . $ext);
-		if (!isset($_SESSION["current_user"]) || !isset($_SESSION["current_ip"]) || !isset($_SESSION["rtoken"]) || (strcmp($_SESSION["rtoken"], \TBcom\Methods::Secure($my_password, $pin, true)) != 0))
+		if (!isset($_SESSION["current_user"]) || !isset($_SESSION["current_ip"]) || !isset($_SESSION["rtoken"]) || (strcmp($_SESSION["rtoken"], M::Secure($my_password, $pin, true)) != 0))
 			header('Location: login' . $ext);
 	}
 };
