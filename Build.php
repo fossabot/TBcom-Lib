@@ -48,7 +48,7 @@ class ContentSection {
 
 	public function replacea($repArr) {
 		foreach ($repArr as $plchold => $val) {
-			$this->replace("{{" . $plchold . "}}", $val);
+			$this->replace($plchold, $val);
 		}
 	}
 
