@@ -247,6 +247,39 @@ EOF;
 		unset($st);
 	}
 
+	public static function tryLogin($p = "") {
+		global $my_password;
+		global $TheBase;
+		$loggedIn = FALSE;
+
+		$st = $TheBase->Prepare("SELECT `id`,`username`,`password`,`pin` FROM `users`");
+		if (!($st->bind_result($s_id, $s_username, $s_password, $s_pin))) {
+			$st->close();
+			throw new \TBcom\MySQLFailException();
+		}
+		if (!($st->execute())) {
+			$st->close();
+			throw new \TBcom\MySQLFailException();
+		}
+
+		while ($st->fetch()) {
+			if ((strcmp(hash("sha256", $_POST['psw']), $s_password) == 0) && (strcmp($_POST['username'], $s_username) == 0) && (strcmp($_POST['pin'], $s_pin) == 0)) {
+				$loginPage->appendAdminLog("<b>{$s_username}</b> has logged in");
+				$_SESSION["current_id"] = $s_id;
+				$_SESSION["current_user"] = $s_username;
+				$_SESSION["current_ip"] = $_SERVER["REMOTE_ADDR"];
+				$_SESSION["rtoken"] = M::Secure($my_password, $p, TRUE);
+				$_SESSION["attempt_ip"] = "";
+				$_SESSION["attempts"] = 0;
+				$loggedIn = TRUE;
+				break;
+			}
+		}
+		$st->close();
+		unset($st);
+		return $loggedIn;
+	}
+
 	public static function writeTableComments() {
 		global $TheBase;
 
