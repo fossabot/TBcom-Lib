@@ -267,7 +267,7 @@ EOF;
 				$_SESSION["current_id"] = $s_id;
 				$_SESSION["current_user"] = $s_username;
 				$_SESSION["current_ip"] = $_SERVER["REMOTE_ADDR"];
-				$_SESSION["rtoken"] = M::Secure($my_password, $p, TRUE);
+				$_SESSION["rtoken"] = \TBcom\Methods::Secure($my_password, $p, TRUE);
 				$_SESSION["attempt_ip"] = "";
 				$_SESSION["attempts"] = 0;
 				$loggedIn = TRUE;
