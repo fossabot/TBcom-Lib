@@ -264,7 +264,6 @@ EOF;
 
 		while ($st->fetch()) {
 			if ((strcmp(hash("sha256", $_POST['psw']), $s_password) == 0) && (strcmp($_POST['username'], $s_username) == 0) && (strcmp($_POST['pin'], $s_pin) == 0)) {
-				$loginPage->appendAdminLog("<b>{$s_username}</b> has logged in");
 				$_SESSION["current_id"] = $s_id;
 				$_SESSION["current_user"] = $s_username;
 				$_SESSION["current_ip"] = $_SERVER["REMOTE_ADDR"];
