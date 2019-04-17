@@ -1,0 +1,11 @@
+{
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/Babkock/TBcom-Lib"
+		}
+	],
+	"require": {
+		"babkock/tbcom-lib": "dev-master"
+	}
+}

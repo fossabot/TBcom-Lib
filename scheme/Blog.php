@@ -254,7 +254,7 @@ class Blog extends PostType {
 			$thedate = date("F j, Y", strtotime($s_comp));
 		
 			$output .= <<<EOF
-		<blog-post id="{$s_id}" href="blog{$ext}?id={$s_id}{$sadmin}" taghref="blog{$ext}?tag={$s_tag}{$sadmin}" date="{$thedate}" tag="{$s_tag}" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<blog-post id="{$s_id}" href="/blog{$ext}?id={$s_id}{$sadmin}" taghref="blog{$ext}?tag={$s_tag}{$sadmin}" date="{$thedate}" tag="{$s_tag}" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
 			<template slot="title" itemprop="headline">{$s_title}</template>
 			<template slot="admin">{$sAdminRow}</template>
 			<template slot="body" itemprop="articleBody">{$trimmed}</template>
