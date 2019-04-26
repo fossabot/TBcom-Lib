@@ -3,7 +3,7 @@
  *
  *     \TBcom\Build
  *
- * Copyright (c) 2019 Tanner Babcock.
+ * Copyright (c) 2019-2020 Tanner Babcock.
  * This software is licensed under the terms of the MIT License. See LICENSE for details.
 */
 namespace TBcom\Build;
@@ -16,19 +16,19 @@ class ContentSection {
 	public function __construct($filename) {
 		$parts = explode(".", $filename);
 		if (@!$parts[1]) {
-			if (!file_exists(__DIR__ . "/../views/" . $parts[0] . ".html")) {
+			if (!file_exists(__DIR__ . "/../views/" . $parts[0] . ".php")) {
 				$this->content = "";
 			}
 			else {
-				$this->content = file_get_contents(__DIR__ . "/../views/" . $parts[0] . ".html");
+				$this->content = file_get_contents(__DIR__ . "/../views/" . $parts[0] . ".php");
 			}
 		}
 		else {
-			if (!file_exists(__DIR__ . "/../../" . $parts[0] . "/resources/views/" . $parts[1] . ".html")) {
+			if (!file_exists(__DIR__ . "/../../" . $parts[0] . "/resources/views/" . $parts[1] . ".php")) {
 				$this->content = "";
 			}
 			else {
-				$this->content = file_get_contents(__DIR__ . "/../../" . $parts[0] . "/resources/views/" . $parts[1] . ".html");
+				$this->content = file_get_contents(__DIR__ . "/../../" . $parts[0] . "/resources/views/" . $parts[1] . ".php");
 			}
 		}
 	}
@@ -54,10 +54,10 @@ class ContentSection {
 
 	public function load($filename) {
 		try {
-			if (!file_exists($filename . ".html")) {
+			if (!file_exists($filename . ".php")) {
 				throw new \TBcom\NoHeaderException();
 			}
-			$this->content = file_get_contents($filename . ".html");
+			$this->content = file_get_contents($filename . ".php");
 		} catch (\TBcom\NoHeaderException $ex) {
 			header('Location: /error' . \TBcom\ext . '?e=404');
 		}
@@ -104,7 +104,7 @@ class Header extends ContentSection {
 		$bcOut = "";
 		$pos = 1;
 		foreach ($bcArray as $k => $v) {
-			$bcOut .= M::Tag(file_get_contents(__DIR__ . "/../views/breadcrumb.html"), [ $v, $k, $pos ]);
+			$bcOut .= M::Tag(file_get_contents(__DIR__ . "/../views/breadcrumb.php"), [ $v, $k, $pos ]);
 			$pos++;
 		}
 		$this->replace("BREADCRUMBS", $bcOut);

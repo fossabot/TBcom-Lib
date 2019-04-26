@@ -3,7 +3,7 @@
  *
  *      \TBcom\Scheme
  *
- * Copyright (c) 2019 Tanner Babcock.
+ * Copyright (c) 2019-2020 Tanner Babcock.
  * This software is licensed under the terms of the MIT License. See LICENSE for details.
 */
 namespace TBcom\Scheme;

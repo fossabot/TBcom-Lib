@@ -1,7 +1,10 @@
 <?php
-/* LIB/ALBUMS
+/* TBcom-Lib Albums
  *
- * Copyright (c) 2019 Tanner Babcock. All rights reserved.
+ *     \TBcom\Album
+ *
+ * Copyright (c) 2018-2020 Tanner Babcock.
+ * This software is licensed under the terms of the MIT License. See LICENSE for details.
 */
 namespace TBcom;
 
