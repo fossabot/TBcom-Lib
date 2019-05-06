@@ -210,7 +210,7 @@ class Page {
 				fclose($handle);
 				throw new \TBcom\NoHeaderException();
 			}
-			if (fwrite($handle, "" . mktime() . "|{$_SERVER['REMOTE_ADDR']}|" . $data) === FALSE) {
+			if (fwrite($handle, "" . mktime() . "|{$_SERVER['REMOTE_ADDR']}|" . $data) === false) {
 				fclose($handle);
 				throw new \TBcom\NoHeaderException();
 			}
@@ -229,7 +229,7 @@ class Page {
 				$f = "log/blog.txt";
 			else if (($this->pagecode >= C\OpinionsMain) && ($this->pagecode <= C\OpinionsDelete))
 				$f = "log/opinions.txt";
-			if (file_put_contents($f, $cont) === FALSE)
+			if (file_put_contents($f, $cont) === false)
 				throw new \TBcom\NoHeaderException();
 		}
 		catch (\TBcom\NoHeaderException $ex) {
@@ -364,26 +364,26 @@ EOF;
 		$hour = date("H", mktime());
 
 		if ($this->pagecode > 40) {
-			$this->header->replace("STYLE", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "admin_linux.css" : "admin.css"));
+			$this->header->replace("STYLE", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== false) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== false)) ? "admin_linux.css" : "admin.css"));
 		}
 
 		if (isset($_SESSION["style"])) {
 			if (strcmp($_SESSION["style"], "day") == 0) {
-				$this->header->replace("STYLE", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "daytime_linux.css" : "daytime.css"));
+				$this->header->replace("STYLE", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== false) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== false)) ? "daytime_linux.css" : "daytime.css"));
 				$this->footer->replace("SWITCHTO", "night");
 			}
 			else {
-				$this->header->replace("STYLE", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "style_linux.css" : "style.css"));
+				$this->header->replace("STYLE", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== false) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== false)) ? "style_linux.css" : "style.css"));
 				$this->footer->replace("SWITCHTO", "day");
 			}
 		}
 		else {
 			if ((intval($hour) >= 9) && (intval($hour) <= 19)) {
-				$this->header->replace("STYLE", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "daytime_linux.css" : "daytime.css"));
+				$this->header->replace("STYLE", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== false) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== false)) ? "daytime_linux.css" : "daytime.css"));
 				$this->footer->replace("SWITCHTO", "night");
 			}
 			else {
-				$this->header->replace("STYLE", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== FALSE) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== FALSE)) ? "style_linux.css" : "style.css"));
+				$this->header->replace("STYLE", (((strpos($_SERVER["HTTP_USER_AGENT"], "X11") !== false) || (strpos($_SERVER["HTTP_USER_AGENT"], "Linux") !== false)) ? "style_linux.css" : "style.css"));
 				$this->footer->replace("SWITCHTO", "day");
 			}
 		}
@@ -396,7 +396,7 @@ EOF;
 		]);
 
 		$this->header->replace("TOKEN", $this->token);
-		if (strpos($this->header->getTitle(), "Text Editing ") === FALSE)
+		if (strpos($this->header->getTitle(), "Text Editing ") === false)
 			$this->middle->replace("TOKEN", $this->token);
 		$this->header->replacea([
 			"BREADCRUMBS" => "",

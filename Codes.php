@@ -1,9 +1,10 @@
 <?php
-/* LIB/CODES
+/* TBcom-Lib Codes
  *
  *      \TBcom\Codes
  *
- * Copyright (c) 2018-2019 Tanner Babcock. All rights reserved.
+ * Copyright (c) 2018-2020 Tanner Babcock.
+ * This software is licensed under the terms of the MIT License. See LICENSE for details.
 */
 namespace TBcom\Codes;
 
