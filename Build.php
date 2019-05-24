@@ -16,19 +16,19 @@ class ContentSection {
 	public function __construct($filename) {
 		$parts = explode(".", $filename);
 		if (@!$parts[1]) {
-			if (!file_exists(__DIR__ . "/../views/" . $parts[0] . ".php")) {
+			if (!file_exists(__DIR__ . "/../views/" . $parts[0] . ".html")) {
 				$this->content = "";
 			}
 			else {
-				$this->content = file_get_contents(__DIR__ . "/../views/" . $parts[0] . ".php");
+				$this->content = file_get_contents(__DIR__ . "/../views/" . $parts[0] . ".html");
 			}
 		}
 		else {
-			if (!file_exists(__DIR__ . "/../../" . $parts[0] . "/resources/views/" . $parts[1] . ".php")) {
+			if (!file_exists(__DIR__ . "/../../" . $parts[0] . "/resources/views/" . $parts[1] . ".html")) {
 				$this->content = "";
 			}
 			else {
-				$this->content = file_get_contents(__DIR__ . "/../../" . $parts[0] . "/resources/views/" . $parts[1] . ".php");
+				$this->content = file_get_contents(__DIR__ . "/../../" . $parts[0] . "/resources/views/" . $parts[1] . ".html");
 			}
 		}
 	}
@@ -54,10 +54,10 @@ class ContentSection {
 
 	public function load($filename) {
 		try {
-			if (!file_exists($filename . ".php")) {
+			if (!file_exists($filename . ".html")) {
 				throw new \TBcom\NoHeaderException();
 			}
-			$this->content = file_get_contents($filename . ".php");
+			$this->content = file_get_contents($filename . ".html");
 		} catch (\TBcom\NoHeaderException $ex) {
 			header('Location: /error' . \TBcom\ext . '?e=404');
 		}
@@ -104,7 +104,7 @@ class Header extends ContentSection {
 		$bcOut = "";
 		$pos = 1;
 		foreach ($bcArray as $k => $v) {
-			$bcOut .= M::Tag(file_get_contents(__DIR__ . "/../views/breadcrumb.php"), [ $v, $k, $pos ]);
+			$bcOut .= M::Tag(file_get_contents(__DIR__ . "/../views/breadcrumb.html"), [ $v, $k, $pos ]);
 			$pos++;
 		}
 		$this->replace("BREADCRUMBS", $bcOut);
@@ -404,7 +404,7 @@ EOF;
 			"THOUGHTS_STYLE" => "display:none;"
 		]);
 		$this->header->keywords();
-		$this->header->ogImage("http://tannerbabcock.com/images/ogimage.png");
+		$this->header->ogImage("https://tannerbabcock.com/images/ogimage.png");
 
 		$this->header->replace("EXT", \TBcom\ext ?? "");
 		$this->middle->replace("EXT", \TBcom\ext ?? "");

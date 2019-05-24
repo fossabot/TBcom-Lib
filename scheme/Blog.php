@@ -260,7 +260,7 @@ class Blog extends PostType {
 			<template slot="body" itemprop="articleBody">{$trimmed}</template>
 			<span itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="Tanner Babcock" /></span>
 			<span itemprop="publisher" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="Tanner Babcock" /></span>
-			<meta itemprop="image" content="http://tannerbabcock.com/ogimage.png" />
+			<meta itemprop="image" content="https://tannerbabcock.com/images/ogimage.png" />
 		</blog-post>
 EOF;
 		}
