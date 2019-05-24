@@ -246,16 +246,16 @@ class Page {
 				$sinit .= <<<EOF
 		</script>
 		<link rel="stylesheet" type="text/css" href="/admin/assets/css/input-row.css" />
-		<script src="/node_modules/vue/dist/vue.min.js"></script>
-		<script src="/node_modules/vue-resource/dist/vue-resource.min.js">
+		<script src="https://unpkg.com/vue@2.6.10/dist/vue.min.js"></script>
+		<script src="https://unpkg.com/vue-resource@1.5.1/dist/vue-resource.min.js">
 EOF;
 				break;
 			case C\RateMedia:
 				$sinit .= "\n";
 				$sinit .= <<<EOF
 		</script>
-		<script src="/node_modules/vue/dist/vue.min.js"></script>
-		<script src="/node_modules/vue-resource/dist/vue-resource.min.js">
+		<script src="https://unpkg.com/vue@2.6.10/dist/vue.min.js"></script>
+		<script src="https://unpkg.com/vue-resource@1.5.1/dist/vue-resource.min.js">
 EOF;
 				break;
 			case C\OpinionGen:
@@ -265,8 +265,8 @@ EOF;
 		<link rel="stylesheet" type="text/css" href="/admin/assets/css/opiniongen-input-row.css" />
 		<link rel="stylesheet" type="text/css" href="/admin/assets/css/opiniongen-row.css" />
 		<link rel="stylesheet" type="text/css" href="/admin/assets/css/input-row.css" />
-		<script src="/node_modules/vue/dist/vue.min.js"></script>
-		<script src="/node_modules/vue-resource/dist/vue-resource.min.js">
+		<script src="https://unpkg.com/vue@2.6.10/dist/vue.min.js"></script>
+		<script src="https://unpkg.com/vue-resource@1.5.1/dist/vue-resource.min.js">
 EOF;
 				break;
 			case C\Contact: case C\PortfolioContact:
@@ -274,15 +274,15 @@ EOF;
 				$sinit .= <<<EOF
 		</script>
 		<link rel="stylesheet" type="text/css" href="/assets/css/input-field.css" />
-		<script src="/node_modules/vue/dist/vue.min.js"></script>
-		<script src="/node_modules/vue-resource/dist/vue-resource.min.js">
+		<script src="https://unpkg.com/vue@2.6.10/dist/vue.min.js"></script>
+		<script src="https://unpkg.com/vue-resource@1.5.1/dist/vue-resource.min.js">
 EOF;
 				break;
 			case C\TextEditor:
 				$sinit .= "\n";
 				$sinit .= <<<EOF
 		</script>
-		<script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"></script>
+		<script type="text/javascript" src="https://unpkg.com/jquery@3.4.1/dist/jquery.min.js"></script>
 		<script type="text/javascript" src="/admin/assets/js/text_editor.min.js">
 EOF;
 				break;
@@ -290,7 +290,7 @@ EOF;
 				$sinit .= "\n";
 				$sinit .= <<<EOF
 			</script>
-			<script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"></script>
+			<script type="text/javascript" src="https://unpkg.com/jquery@3.4.1/dist/jquery.min.js"></script>
 			<script type="text/javascript" src="../assets/js/cycle.min.js">
 EOF;
 				break;
@@ -299,7 +299,7 @@ EOF;
 				$sinit .= <<<EOF
 		</script>
 		<link rel="stylesheet" href="/assets/css/art-slide.css" />
-		<script src="/node_modules/vue/dist/vue.min.js">
+		<script src="https://unpkg.com/vue@2.6.10/dist/vue.min.js">
 EOF;
 				$foot = "";
 				$foot .= <<<EOF
@@ -315,8 +315,8 @@ EOF;
 		</script>
 		<link rel="stylesheet" href="/assets/css/art-work.css" />
 		<link rel="stylesheet" href="/assets/css/art-expand.css" />
-		<script src="/node_modules/vue/dist/vue.min.js"></script>
-		<script src="/node_modules/vue-resource/dist/vue-resource.min.js">
+		<script src="https://unpkg.com/vue@2.6.10/dist/vue.min.js"></script>
+		<script src="https://unpkg.com/vue-resource@1.5.1/dist/vue-resource.min.js">
 EOF;
 				$foot = "";
 				$foot .= <<<EOF
@@ -331,7 +331,7 @@ EOF;
 				$sinit .= <<<EOF
 		</script>
 		<link rel="stylesheet" href="/assets/css/blog-post.css" />
-		<script src="/node_modules/vue/dist/vue.min.js">
+		<script src="https://unpkg.com/vue@2.6.10/dist/vue.min.js">
 EOF;
 				$foot = "";
 				$foot .= <<<EOF
@@ -346,8 +346,8 @@ EOF;
 				$sinit .= <<<EOF
 		</script>
 		<link rel="stylesheet" href="/assets/css/music-track.css" />
-		<script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"></script>
-		<script type="text/javascript" src="/node_modules/vue/dist/vue.min.js">
+		<script type="text/javascript" src="https://unpkg.com/jquery@3.4.1/dist/jquery.min.js"></script>
+		<script type="text/javascript" src="https://unpkg.com/vue@2.6.10/dist/vue.min.js">
 EOF;
 				$foot = "";
 				$foot .= <<<EOF
