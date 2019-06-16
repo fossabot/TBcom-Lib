@@ -23,7 +23,7 @@ $MusicDescription = $mediaParsed["MusicDescription"];
 $FilmFiles = $mediaParsed["FilmFiles"];
 $FilmFlags = $mediaParsed["FilmFlags"];
 $FilmDescription = $mediaParsed["FilmDescription"];
-$ArtFiles = $mediaParsed["ArtFiles"];
+$FictionFiles = $mediaParsed["FictionFiles"];
 $GenreFiles = $mediaParsed["GenreFiles"];
 
 // This specifies whether or not the web software should request these pages with the trailing ".php".
