@@ -357,6 +357,14 @@ EOF;
 				$this->footer->append($foot);
 				$this->footer->append("\n\t</body>\n</html>\n");
 				break;
+			case C\RateMediaView:
+				$sinit .= "\n";
+				$sinit .= <<<EOF
+		</script>
+		<link rel="stylesheet" type="text/css" href="/assets/css/flags.css" />
+		<script>
+EOF;
+				break;
 			default:
 				break;
 		}
