@@ -239,16 +239,15 @@ class Art extends PostType {
 			$stmnt->close();
 			throw new \TBcom\MySQLFailException();
 		}
-		$stmnt->fetch();
 
 		$output = <<<EOF
 <center>
-<h2>{$ArtBody[$s_series]}</h2>
+<h2>{$ArtBody[$code]}</h2>
 {$ArtDescription[$code]}
 <center>
 	<h3><a href="art{$ext}?s=all{$atoken}>Return to All Pieces</a></h3>
 </center>
-<div class="artg_table" id="{$ArtBody[$s_series]}">
+<div class="artg_table" id="{$ArtBody[$code]}">
 	<div class="artg_row">
 EOF;
 		$titleString = "";
