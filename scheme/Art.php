@@ -231,10 +231,15 @@ class Art extends PostType {
 			throw new \TBcom\MySQLFailException();
 		}
 		$ol_series = $code;
-		if (!($stmnt->bind_result($s_id, $s_comp, $s_series, $s_descript, $s_title)) || !($stmnt->execute())) {
+		if (!($stmnt->bind_result($s_id, $s_comp, $s_series, $s_descript, $s_title))) {
 			$stmnt->close();
 			throw new \TBcom\MySQLFailException();
 		}
+		if (!($stmnt->execute())) {
+			$stmnt->close();
+			throw new \TBcom\MySQLFailException();
+		}
+		$stmnt->fetch();
 
 		$output = <<<EOF
 <center>
