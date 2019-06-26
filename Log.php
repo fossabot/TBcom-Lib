@@ -39,7 +39,9 @@ function isBot($ua) {
 		"Nimbostratus-Bot/",
 		"test",
 		"TurnitinBot",
-		"serpstatbot/"
+		"serpstatbot/",
+		"centurybot",
+		"IndeedBot"
 	];
 	if (strlen($ua) < 18) {
 		return true;
