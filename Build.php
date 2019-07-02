@@ -13,6 +13,19 @@ use TBcom\Methods as M;
 class ContentSection {
 	private $content;
 
+	/// constructor
+	///
+	/// The basic constructor for the ContentSection fetches an HTML file from /resources/views, or /foo/resources/views.
+	///
+	///    <?php
+	///    $c = new ContentSection("dolphin");
+	///
+	///    This loads /resources/views/dolphin.html
+	///
+	///    $c = new ContentSection("mammal.bear");
+	///
+	///    This loads /mammal/resources/views/bear.html
+	///
 	public function __construct($filename) {
 		$parts = explode(".", $filename);
 		if (@!$parts[1]) {
@@ -42,16 +55,31 @@ class ContentSection {
 	public function append($data) { $this->content .= $data; }
 	public function prepend($data) { $this->content = $data . $this->content; }
 
+	/// replace($plchold, $val = "")
+	///
+	/// Replaces $plchold with $val. $plchold appears as "{{PLACEHOLDER}}" in the file's body.
+	///
+	///    <?php
+	///    $a = new P("top", "middle");
+	///    $a->middle->replace("PI", (22/7));
+	///    $a->middle->replace("FULL_NAME", "John Doe");
+	///
 	public function replace($plchold, $val = "") {
 		$this->content = str_replace("{{" . $plchold . "}}", $val, $this->content);
 	}
 
+	/// replacea($repArr)
+	///
+	/// Processes an array of find -> replace key pairs
 	public function replacea($repArr) {
 		foreach ($repArr as $plchold => $val) {
 			$this->replace($plchold, $val);
 		}
 	}
 
+	/// load($filename)
+	///
+	/// Load the contents of filename into $this->content.
 	public function load($filename) {
 		try {
 			if (!file_exists($filename . ".html")) {
@@ -90,6 +118,14 @@ class Header extends ContentSection {
 	public function keywords($k = "") { $this->replace("KEYWORDS", $k); }
 	public function description($d = "") { $this->replace("META_DESCRIPTION", $d); }
 
+	/// ogImage($url)
+	///
+	/// This sets the preview image URL for Facebook's Open Graph protocol. It also fetches the height and width.
+	///
+	///    <?php
+	///    $a = new P("top");
+	///    $a->ogImage("http://example.com/ogimage.png");
+	///    
 	public function ogImage($url) {
 		$w = @\getimagesize($url)[0];
 		$h = @\getimagesize($url)[1];
@@ -99,7 +135,10 @@ class Header extends ContentSection {
 			"OG_HEIGHT" => "" . $h
 		]);
 	}
-	
+
+	/// breadcrumbs($bcArray)
+	///
+	/// Use the array as breadcrumbs with title -> url pairs.
 	public function breadcrumbs($bcArray) {
 		$bcOut = "";
 		$pos = 1;
@@ -129,7 +168,10 @@ class Middle extends ContentSection {
 	public function __destruct() {
 		parent::__destruct();
 	}
-	
+
+	/// script($s)
+	///
+	/// Include the specified script at the end of the content body
 	public function script($s) {
 		try {
 			$sc = "";
@@ -151,7 +193,17 @@ class Page {
 	private $end;
 	private $pagecode;
 	private $token;
-	
+
+	/// constructor
+	///
+	/// The only argument that does not have a default value is the first, for the header file. After this, the second may be assumed and empty file, and the third can be assumed "footer".
+	/// The title may also be set this way, but only after explicitly providing the footer as the third argument.
+	///
+	///    <?php
+	///    $a = new P("top");
+	///    $b = new P("top", "middle");
+	///    $c = new P("top", "middle", "bottom", "Untitled");
+	///
 	public function __construct($h, $m = "", $f = "footer", $t = "{{TITLE}}") {
 		try {
 			$this->header = new Header($h, $t);
@@ -190,13 +242,25 @@ class Page {
 	}
 	public function getPageCode() { return $this->pagecode; }
 
+	/// init($t, $des, $c = null)
+	///
+	/// A quick way to initialize a page. The first argument is the title, second the description, and the third is the page code.
+	///
+	///    <?php
+	///    $myPage = new P("header", "content");
+	///    $myPage->init("My Great Page", "The best web site in the world!", GreatPage);
+	///
 	public function init($t, $des, $c = null) {
 		$this->header->setTitle($t);
 		$this->header->description($des);
 		$this->setPageCode($c);
 	}
-	
+
+	/// getToken()
+	///
+	/// This function will only return something if the user is successfully authenticated
 	public function getToken() { return $this->token; }
+	
 	public function setHeader($h) { $this->header->set($h); }
 	public function getHeader() { return $this->header->get(); }
 	public function setMiddle($m) { $this->middle->set($m); }
@@ -221,6 +285,9 @@ class Page {
 		}
 	}
 
+	/// recent($cont)
+	///
+	/// Write $cont to the text file noting the most recently edited media
 	public function recent($cont) {
 		try {
 			if (($this->pagecode >= C\ArtMain) && ($this->pagecode <= C\ArtGallery))
@@ -237,6 +304,24 @@ class Page {
 		}
 	}
 
+	/// output()
+	///
+	/// Echoes the entire page, top to bottom, after determining a number of last-minute conditions.
+	/// This should be at the very bottom of the source code,otherwise only inside a catch statement.
+	///
+	///    <?php
+	///    $a = new P("top", "middle");
+	///    $a->init("Foo", "bar", 10);
+	///    try {
+	///        crazyThing();
+	///    }
+	///    catch (CrazyException $e) {
+	///        $a->setMiddle("<p>Oops!</p>");
+	///        $a->output();
+	///        exit();
+	///    }
+	///    $a->output();
+	///
 	public function output() {
 		$sinit = "";
 		switch ($this->pagecode) {
@@ -436,6 +521,14 @@ EOF;
 		$this->footer->output();
 	}
 
+
+	/// security()
+	///
+	/// Returns whether the user is authenticated. Use like this, only on pages meant for both public and admin use:
+	///
+	///    <?php
+	///    $admin = P::security();
+	///
 	public static function security() {
 		global $my_password;
 
@@ -445,6 +538,13 @@ EOF;
 		return ((isset($_GET['tok'])) && (isset($_SESSION["current_user"])) && (isset($_SESSION["rtoken"])) && (strcmp($_GET['tok'], M::Secure($my_password, $pin)) == 0) && (strcmp($_SESSION["rtoken"], M::Secure($my_password, $pin, true)) == 0));
 	}
 
+	/// adminSecurity()
+	///
+	/// Unlike security(), this does not return anything. Use only on pages for which admin privileges are required. This kicks out the user if they are not sufficiently authenticated 
+	///
+	///    <?php
+	///    P::adminSecurity();
+	///
 	public static function adminSecurity() {
 		global $my_password;
 		$ext = \TBcom\ext;
