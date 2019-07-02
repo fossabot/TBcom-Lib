@@ -10,6 +10,8 @@ namespace TBcom\Build;
 use TBcom\Codes as C;
 use TBcom\Methods as M;
 
+///     \TBcom\Build\ContentSection
+///
 class ContentSection {
 	private $content;
 
@@ -17,14 +19,14 @@ class ContentSection {
 	///
 	/// The basic constructor for the ContentSection fetches an HTML file from /resources/views, or /foo/resources/views.
 	///
-	///    <?php
-	///    $c = new ContentSection("dolphin");
+	///     <?php
+	///     $c = new ContentSection("dolphin");
 	///
-	///    This loads /resources/views/dolphin.html
+	///     This loads /resources/views/dolphin.html
 	///
-	///    $c = new ContentSection("mammal.bear");
+	///     $c = new ContentSection("mammal.bear");
 	///
-	///    This loads /mammal/resources/views/bear.html
+	///     This loads /mammal/resources/views/bear.html
 	///
 	public function __construct($filename) {
 		$parts = explode(".", $filename);
@@ -59,10 +61,17 @@ class ContentSection {
 	///
 	/// Replaces $plchold with $val. $plchold appears as "{{PLACEHOLDER}}" in the file's body.
 	///
-	///    <?php
-	///    $a = new P("top", "middle");
-	///    $a->middle->replace("PI", (22/7));
-	///    $a->middle->replace("FULL_NAME", "John Doe");
+	///     <?php
+	///     $a = new P("top", "middle");
+	///     $a->middle->replace("PI", (22/7));
+	///     $a->middle->replace("FULL_NAME", "John Doe");
+	///
+	///     middle.html:
+	///
+	///     <div class="content">
+	///         <h1>My full name is {{FULL_NAME}}</h1>
+	///         <h3>And the number pi is {{PI}}</h3>
+	///     </div>
 	///
 	public function replace($plchold, $val = "") {
 		$this->content = str_replace("{{" . $plchold . "}}", $val, $this->content);
@@ -70,7 +79,16 @@ class ContentSection {
 
 	/// replacea($repArr)
 	///
-	/// Processes an array of find -> replace key pairs
+	/// Processes an array of find -> replace key pairs.
+	///
+	///     <?php
+	///     $page = new P("top", "middle");
+	///     $page->middle->replacea([
+	///          "PI" => (22/7),
+	///          "FULL_NAME" => "John Doe",
+	///          "AGE" => 28
+	///     ]);
+	///     
 	public function replacea($repArr) {
 		foreach ($repArr as $plchold => $val) {
 			$this->replace($plchold, $val);
@@ -80,6 +98,7 @@ class ContentSection {
 	/// load($filename)
 	///
 	/// Load the contents of filename into $this->content.
+	///
 	public function load($filename) {
 		try {
 			if (!file_exists($filename . ".html")) {
@@ -91,14 +110,25 @@ class ContentSection {
 		}
 	}
 
+	/// output()
+	///
+	/// Echoes the entirety of $this->content.
+	///
 	public function output() {
 		echo $this->content;
 	}
 };
 
+///      \TBcom\Build\Header
+///
 class Header extends ContentSection {
 	private $title;
 
+	/// constructor
+	///
+	/// The constructor loads the contents of $filename into $content (of the parent ContentSection), and saves $t as the title.
+	/// If no title is supplied, it uses the placeholder {{TITLE}} by default, so the programmer can specify the page title later.
+	///
 	public function __construct($filename, $t = "{{TITLE}}") {
 		parent::__construct($filename);
 		$this->title = $t;
@@ -115,16 +145,26 @@ class Header extends ContentSection {
 	}
 
 	public function getTitle() { return $this->title; }
+
+	/// keywords($k = "")
+	///
+	/// This function replaces {{KEYWORDS}} which is typically saved in header.html. Use this function to specify keywords for the <meta name="keywords"> tag.
+	///
 	public function keywords($k = "") { $this->replace("KEYWORDS", $k); }
+
+	/// description($d = "")
+	///
+	/// This function replaces {{META_DESCRIPTION}} which is typically saved in header.html. Use this function to specify a short description for the <meta name="description"> tag.
+	///
 	public function description($d = "") { $this->replace("META_DESCRIPTION", $d); }
 
 	/// ogImage($url)
 	///
 	/// This sets the preview image URL for Facebook's Open Graph protocol. It also fetches the height and width.
 	///
-	///    <?php
-	///    $a = new P("top");
-	///    $a->ogImage("http://example.com/ogimage.png");
+	///     <?php
+	///     $a = new P("top");
+	///     $a->ogImage("http://example.com/ogimage.png");
 	///    
 	public function ogImage($url) {
 		$w = @\getimagesize($url)[0];
@@ -138,7 +178,26 @@ class Header extends ContentSection {
 
 	/// breadcrumbs($bcArray)
 	///
-	/// Use the array as breadcrumbs with title -> url pairs.
+	/// Use the array as breadcrumbs with title -> url pairs. This is used for search engine optimization, and
+	/// is typically one of the last lines in the source code, before output().
+	///
+	///     <?php
+	///     $a = new P("top", "middle");
+	///
+	///     $a->header->setTitle("My Great Site");
+	///     $a->header->description("My wonderful description for my site.");
+	///
+	///     $a->header->breadcrumbs([
+	///          "Home" => "https://example.com/home",
+	///          "Blog" => "https://example.com/blog"
+	///     ]);
+	///     
+	///     appears on search engines as:
+	///     
+	///     My Great Site
+	///       My wonderful description for my site.
+	///       Home > Blog
+	///
 	public function breadcrumbs($bcArray) {
 		$bcOut = "";
 		$pos = 1;
@@ -150,6 +209,8 @@ class Header extends ContentSection {
 	}
 };
 
+///     \TBcom\Build\Footer
+///
 class Footer extends ContentSection {
 	public function __construct($filename) {
 		parent::__construct($filename);
@@ -160,6 +221,8 @@ class Footer extends ContentSection {
 	}
 };
 
+///     \TBcom\Build\Middle
+///
 class Middle extends ContentSection {
 	public function __construct($filename) {
 		parent::__construct($filename);
@@ -171,7 +234,9 @@ class Middle extends ContentSection {
 
 	/// script($s)
 	///
-	/// Include the specified script at the end of the content body
+	/// Include the specified script at the end of the content body. This does not include it with <script src>,
+	/// it echoes the content of the script between <script> tags.
+	///
 	public function script($s) {
 		try {
 			$sc = "";
@@ -185,6 +250,8 @@ class Middle extends ContentSection {
 	}
 };
 
+///     \TBcom\Build\Page
+///
 class Page {
 	public $header;
 	public $middle;
@@ -229,6 +296,9 @@ class Page {
 		unset($this->token);
 	}
 
+	/// setPageCode($p)
+	///
+	///
 	public function setPageCode($p) {
 		try {
 			if (($p > 40) && (!$this->token))
