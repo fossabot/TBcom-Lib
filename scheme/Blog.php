@@ -94,10 +94,7 @@ class Blog extends PostType {
 	}
 
 	public function isMark() {
-		if (strcmp($this->type, "md") == 0)
-			return true;
-		else
-			return false;
+		return (strcmp($this->type, "md") == 0);
 	}
 
 	public function write($q = "INSERT INTO `blog` VALUES(?, NOW(), ?, ?, ?, ?)") {

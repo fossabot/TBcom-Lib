@@ -334,11 +334,11 @@ EOF;
 		$st = $TheBase->Prepare("SELECT * FROM `art` ORDER BY `series`,`id` ASC");
 		if (!($st->bind_result($s_id, $s_comp, $s_series, $s_descript, $s_title))) {
 			$st->close();
-			throw new MySQLFailException("bind_result() failed");
+			throw new \TBcom\MySQLFailException("bind_result() failed");
 		}
 		if (!($st->execute())) {
 			$st->close();
-			throw new MySQLFailException("execute() failed");
+			throw new \TBcom\MySQLFailException("execute() failed");
 		}
 
 		for ($x = 0; $st->fetch(); $x++) {

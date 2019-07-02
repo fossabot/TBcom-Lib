@@ -309,7 +309,7 @@ EOF;
 				$this->footer->append($foot);
 				$this->footer->append("\n\t</body>\n</html>\n");
 				break;
-			case C\ArtIndex: case C\ArtGallery:
+			case C\ArtIndex:
 				$sinit .= "\n";
 				$sinit .= <<<EOF
 		</script>
