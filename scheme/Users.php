@@ -266,7 +266,7 @@ EOF;
 		if (!$result) {
 			throw new \TBcom\MySQLFailException("Query failed");
 		}
-		$result = $TheBase->Query("ALTER TABLE `users` CHANGE `email` `email` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The user\'s email address.");
+		$result = $TheBase->Query("ALTER TABLE `users` CHANGE `email` `email` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'The user\'s email address.'");
 		if (!$result) {
 			throw new \TBcom\MySQLFailException("Query failed");
 		}

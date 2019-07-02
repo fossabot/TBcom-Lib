@@ -41,7 +41,9 @@ function isBot($ua) {
 		"TurnitinBot",
 		"serpstatbot/",
 		"centurybot",
-		"IndeedBot"
+		"IndeedBot",
+		"Apache-HttpClient/",
+		"Scrapy/"
 	];
 	if (strlen($ua) < 18) {
 		return true;
