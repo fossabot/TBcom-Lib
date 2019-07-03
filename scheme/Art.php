@@ -9,6 +9,8 @@
 namespace TBcom\Scheme;
 require_once(__DIR__ . "/../Post.php");
 
+///     \TBcom\Scheme\Art
+///
 class Art extends PostType {
 	/* TABLE: `art`
 		______________________________
@@ -27,6 +29,14 @@ class Art extends PostType {
 	private $series;
 	private $title;
 
+	/* constructor
+	
+	   The constructor takes two arguments, the numerical ID and the body/description. These get sent to the parent's
+	   constructor.
+
+	       <?php
+           $a = new Scheme\Art(1, "hello world");
+	*/
 	public function __construct($i = 0, $b = "") {
 		parent::__construct($i, $b);
 	}
@@ -38,6 +48,10 @@ class Art extends PostType {
 		unset($this->title);
 	}
 
+	/* {set,get}{Id,Series,Comp,Title,Body}()
+	
+	   Setters and getters for the fields of the Art object.
+	*/
 	public function getId() { return parent::getId(); }
 	public function setId($i) { parent::setId($i); }
 	public function getSeries() { return $this->series; }
@@ -54,6 +68,20 @@ class Art extends PostType {
 		return $parser->getAsHtml();
 	}
 
+	/* seta($arr)
+	
+	   Set the fields of the current Art work using an associative array.
+
+	       <?php
+           $a = new Scheme\Art();
+		   $a->seta([
+		       "id" => 1,
+			   "body" => "This piece sucks. Stupid colors",
+			   "series" => "shit",
+			   "comp" => "2018-10-22",
+			   "title" => "Untitled"
+	       ]);
+	*/
 	public function seta($arr) {
 		foreach ($arr as $k => $v) {
 			if (strcmp($k, "id") == 0) { parent::setId($v); }
@@ -63,6 +91,20 @@ class Art extends PostType {
 			if (strcmp($k, "title") == 0) { $this->title = $v; }
 		}
 	}
+	
+	/* geta(&$arr)
+	
+	   Get the fields of the current Art work into an empty array.
+
+	       <?php
+           $a = new Scheme\Art();
+           $arr = [];
+		   $a->read("foob", 2);
+		   $a->geta(&$arr);
+
+		   print_r($arr);
+		   // Should print the fields of series "foob" #2
+	*/
 	public function geta(&$arr) {
 		$arr = [
 			"id" => parent::getId(),
