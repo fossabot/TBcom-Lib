@@ -15,19 +15,19 @@ use TBcom\Methods as M;
 class ContentSection {
 	private $content;
 
-	/// constructor
-	///
-	/// The basic constructor for the ContentSection fetches an HTML file from /resources/views, or /foo/resources/views.
-	///
-	///     <?php
-	///     $c = new ContentSection("dolphin");
-	///
-	///     This loads /resources/views/dolphin.html
-	///
-	///     $c = new ContentSection("mammal.bear");
-	///
-	///     This loads /mammal/resources/views/bear.html
-	///
+	/*  constructor
+	 
+	    The basic constructor for the ContentSection fetches an HTML file from /resources/views, or /foo/resources/views.
+	   
+	        <?php
+	        $c = new ContentSection("dolphin");
+	   
+	        This loads /resources/views/dolphin.html
+	   
+	        $c = new ContentSection("mammal.bear");
+	   
+	        This loads /mammal/resources/views/bear.html
+	*/
 	public function __construct($filename) {
 		$parts = explode(".", $filename);
 		if (@!$parts[1]) {
@@ -57,48 +57,48 @@ class ContentSection {
 	public function append($data) { $this->content .= $data; }
 	public function prepend($data) { $this->content = $data . $this->content; }
 
-	/// replace($plchold, $val = "")
-	///
-	/// Replaces $plchold with $val. $plchold appears as "{{PLACEHOLDER}}" in the file's body.
-	///
-	///     <?php
-	///     $a = new P("top", "middle");
-	///     $a->middle->replace("PI", (22/7));
-	///     $a->middle->replace("FULL_NAME", "John Doe");
-	///
-	///     middle.html:
-	///
-	///     <div class="content">
-	///         <h1>My full name is {{FULL_NAME}}</h1>
-	///         <h3>And the number pi is {{PI}}</h3>
-	///     </div>
-	///
+	/* replace($plchold, $val = "")
+	
+	   Replaces $plchold with $val. $plchold appears as "{{PLACEHOLDER}}" in the file's body.
+	   
+	       <?php
+	       $a = new P("top", "middle");
+	       $a->middle->replace("PI", (22/7));
+	       $a->middle->replace("FULL_NAME", "John Doe");
+	  
+	       middle.html:
+	  
+	       <div class="content">
+	           <h1>My full name is {{FULL_NAME}}</h1>
+	           <h3>And the number pi is {{PI}}</h3>
+	       </div>
+	*/
 	public function replace($plchold, $val = "") {
 		$this->content = str_replace("{{" . $plchold . "}}", $val, $this->content);
 	}
 
-	/// replacea($repArr)
-	///
-	/// Processes an array of find -> replace key pairs.
-	///
-	///     <?php
-	///     $page = new P("top", "middle");
-	///     $page->middle->replacea([
-	///          "PI" => (22/7),
-	///          "FULL_NAME" => "John Doe",
-	///          "AGE" => 28
-	///     ]);
-	///     
+	/* replacea($repArr)
+	
+	   Processes an array of find -> replace key pairs.
+	
+	       <?php
+	       $page = new P("top", "middle");
+	       $page->middle->replacea([
+	           "PI" => (22/7),
+	           "FULL_NAME" => "John Doe",
+	           "AGE" => 28
+	       ]);
+	*/     
 	public function replacea($repArr) {
 		foreach ($repArr as $plchold => $val) {
 			$this->replace($plchold, $val);
 		}
 	}
 
-	/// load($filename)
-	///
-	/// Load the contents of filename into $this->content.
-	///
+	/* load($filename)
+	
+	   Load the contents of filename into $this->content.
+	*/
 	public function load($filename) {
 		try {
 			if (!file_exists($filename . ".html")) {
@@ -110,10 +110,10 @@ class ContentSection {
 		}
 	}
 
-	/// output()
-	///
-	/// Echoes the entirety of $this->content.
-	///
+	/* output()
+	
+	   Echoes the entirety of $this->content.
+	*/
 	public function output() {
 		echo $this->content;
 	}
@@ -124,11 +124,11 @@ class ContentSection {
 class Header extends ContentSection {
 	private $title;
 
-	/// constructor
-	///
-	/// The constructor loads the contents of $filename into $content (of the parent ContentSection), and saves $t as the title.
-	/// If no title is supplied, it uses the placeholder {{TITLE}} by default, so the programmer can specify the page title later.
-	///
+	/* constructor
+	
+	   The constructor loads the contents of $filename into $content (of the parent ContentSection), and saves $t as the title.
+	   If no title is supplied, it uses the placeholder {{TITLE}} by default, so the programmer can specify the page title later.
+	*/
 	public function __construct($filename, $t = "{{TITLE}}") {
 		parent::__construct($filename);
 		$this->title = $t;
@@ -146,26 +146,26 @@ class Header extends ContentSection {
 
 	public function getTitle() { return $this->title; }
 
-	/// keywords($k = "")
-	///
-	/// This function replaces {{KEYWORDS}} which is typically saved in header.html. Use this function to specify keywords for the <meta name="keywords"> tag.
-	///
+	/* keywords($k = "")
+	
+	   This function replaces {{KEYWORDS}} which is typically saved in header.html. Use this function to specify keywords for the <meta name="keywords"> tag.
+	*/
 	public function keywords($k = "") { $this->replace("KEYWORDS", $k); }
 
-	/// description($d = "")
-	///
-	/// This function replaces {{META_DESCRIPTION}} which is typically saved in header.html. Use this function to specify a short description for the <meta name="description"> tag.
-	///
+	/* description($d = "")
+	
+	   This function replaces {{META_DESCRIPTION}} which is typically saved in header.html. Use this function to specify a short description for the <meta name="description"> tag.
+	*/
 	public function description($d = "") { $this->replace("META_DESCRIPTION", $d); }
 
-	/// ogImage($url)
-	///
-	/// This sets the preview image URL for Facebook's Open Graph protocol. It also fetches the height and width.
-	///
-	///     <?php
-	///     $a = new P("top");
-	///     $a->ogImage("http://example.com/ogimage.png");
-	///    
+	/* ogImage($url)
+	
+	   This sets the preview image URL for Facebook's Open Graph protocol. It also fetches the height and width.
+	
+	       <?php
+	       $a = new P("top");
+	       $a->ogImage("http://example.com/ogimage.png");
+	*/   
 	public function ogImage($url) {
 		$w = @\getimagesize($url)[0];
 		$h = @\getimagesize($url)[1];
@@ -176,28 +176,28 @@ class Header extends ContentSection {
 		]);
 	}
 
-	/// breadcrumbs($bcArray)
-	///
-	/// Use the array as breadcrumbs with title -> url pairs. This is used for search engine optimization, and
-	/// is typically one of the last lines in the source code, before output().
-	///
-	///     <?php
-	///     $a = new P("top", "middle");
-	///
-	///     $a->header->setTitle("My Great Site");
-	///     $a->header->description("My wonderful description for my site.");
-	///
-	///     $a->header->breadcrumbs([
-	///          "Home" => "https://example.com/home",
-	///          "Blog" => "https://example.com/blog"
-	///     ]);
-	///     
-	///     appears on search engines as:
-	///     
-	///     My Great Site
-	///       My wonderful description for my site.
-	///       Home > Blog
-	///
+	/* breadcrumbs($bcArray)
+	
+	   Use the array as breadcrumbs with title -> url pairs. This is used for search engine optimization, and
+	   is typically one of the last lines in the source code, before output().
+	
+	       <?php
+	       $a = new P("top", "middle");
+	
+	       $a->header->setTitle("My Great Site");
+	       $a->header->description("My wonderful description for my site.");
+	
+	       $a->header->breadcrumbs([
+	           "Home" => "https://example.com/home",
+	           "Blog" => "https://example.com/blog"
+	       ]);
+	     
+	     appears on search engines as:
+	     
+	       My Great Site
+	         My wonderful description for my site.
+	         Home > Blog
+	 */
 	public function breadcrumbs($bcArray) {
 		$bcOut = "";
 		$pos = 1;
@@ -232,11 +232,11 @@ class Middle extends ContentSection {
 		parent::__destruct();
 	}
 
-	/// script($s)
-	///
-	/// Include the specified script at the end of the content body. This does not include it with <script src>,
-	/// it echoes the content of the script between <script> tags.
-	///
+	/* script($s)
+	
+	   Include the specified script at the end of the content body. This does not include it with <script src>,
+	   it echoes the content of the script between <script> tags.
+	*/
 	public function script($s) {
 		try {
 			$sc = "";
@@ -261,16 +261,16 @@ class Page {
 	private $pagecode;
 	private $token;
 
-	/// constructor
-	///
-	/// The only argument that does not have a default value is the first, for the header file. After this, the second may be assumed and empty file, and the third can be assumed "footer".
-	/// The title may also be set this way, but only after explicitly providing the footer as the third argument.
-	///
-	///    <?php
-	///    $a = new P("top");
-	///    $b = new P("top", "middle");
-	///    $c = new P("top", "middle", "bottom", "Untitled");
-	///
+	/* constructor
+	
+	   The only argument that does not have a default value is the first, for the header file. After this, the second may be assumed and empty file, and the third can be assumed "footer".
+	   The title may also be set this way, but only after explicitly providing the footer as the third argument.
+	
+	       <?php
+	       $a = new P("top");
+	       $b = new P("top", "middle");
+	       $c = new P("top", "middle", "bottom", "Untitled");
+	*/
 	public function __construct($h, $m = "", $f = "footer", $t = "{{TITLE}}") {
 		try {
 			$this->header = new Header($h, $t);
@@ -296,9 +296,11 @@ class Page {
 		unset($this->token);
 	}
 
-	/// setPageCode($p)
-	///
-	///
+	/* setPageCode($p)
+	
+	   Sets the numerical "code" for the page, from a predefined list of macros. If the "code" is for an admin page,
+	   and the requesting user is not authenticated, it throws an exception.
+	*/
 	public function setPageCode($p) {
 		try {
 			if (($p > 40) && (!$this->token))
@@ -312,25 +314,31 @@ class Page {
 	}
 	public function getPageCode() { return $this->pagecode; }
 
-	/// init($t, $des, $c = null)
-	///
-	/// A quick way to initialize a page. The first argument is the title, second the description, and the third is the page code.
-	///
-	///    <?php
-	///    $myPage = new P("header", "content");
-	///    $myPage->init("My Great Page", "The best web site in the world!", GreatPage);
-	///
+	/* init($t, $des, $c = null)
+	
+	   A quick way to initialize a page. The first argument is the title, second the description, and the third is the page code.
+	  
+	       <?php
+	       $a = new P("header", "content");
+	       $a->init("My Great Page", "The best web site in the world!", GreatPage);
+	*/
 	public function init($t, $des, $c = null) {
 		$this->header->setTitle($t);
 		$this->header->description($des);
 		$this->setPageCode($c);
 	}
 
-	/// getToken()
-	///
-	/// This function will only return something if the user is successfully authenticated
-	public function getToken() { return $this->token; }
+	/* getToken()
 	
+	   This function will only return something if the user is successfully authenticated.
+	   It will return the token generated with the universal PIN and password by M::Secure().
+	*/
+	public function getToken() { return $this->token; }
+
+	/* {set,get}{Header,Middle,Footer}()
+	
+	   Setters and getters for $this->{header,middle,footer} respectively.
+	*/ 
 	public function setHeader($h) { $this->header->set($h); }
 	public function getHeader() { return $this->header->get(); }
 	public function setMiddle($m) { $this->middle->set($m); }
@@ -338,6 +346,10 @@ class Page {
 	public function setFooter($f) { $this->footer->set($f); }
 	public function getFooter() { return $this->footer->get(); }
 
+	/* appendAdminLog($data)
+	
+	   Appends the string $data to the system's admin log at /admin/log/admin.log
+	*/
 	public function appendAdminLog($data) {
 		try {
 			if (!($handle = fopen("log/admin.log", "a+"))) {
@@ -355,9 +367,10 @@ class Page {
 		}
 	}
 
-	/// recent($cont)
-	///
-	/// Write $cont to the text file noting the most recently edited media
+	/* recent($cont)
+	
+	   Write $cont to the text file noting the most recently edited media. This will either be /admin/log/ art.txt, blog.txt, or opinions.txt.
+	*/
 	public function recent($cont) {
 		try {
 			if (($this->pagecode >= C\ArtMain) && ($this->pagecode <= C\ArtGallery))
@@ -374,24 +387,25 @@ class Page {
 		}
 	}
 
-	/// output()
-	///
-	/// Echoes the entire page, top to bottom, after determining a number of last-minute conditions.
-	/// This should be at the very bottom of the source code,otherwise only inside a catch statement.
-	///
-	///    <?php
-	///    $a = new P("top", "middle");
-	///    $a->init("Foo", "bar", 10);
-	///    try {
-	///        crazyThing();
-	///    }
-	///    catch (CrazyException $e) {
-	///        $a->setMiddle("<p>Oops!</p>");
-	///        $a->output();
-	///        exit();
-	///    }
-	///    $a->output();
-	///
+	/* output()
+	
+	   Echoes the entire page, top to bottom, after determining a number of last-minute conditions.
+	   This should be at the very bottom of the source code,otherwise only inside a catch statement.
+	
+	       <?php
+	       $a = new P("top", "middle");
+	       $a->init("Foo", "bar", 10);
+	
+	       try {
+	           crazyThing();
+	       }
+	       catch (CrazyException $e) {
+	           $a->setMiddle("<p>Oops!</p>");
+	           $a->output();
+	           exit();
+	       }
+	       $a->output();
+	*/
 	public function output() {
 		$sinit = "";
 		switch ($this->pagecode) {
@@ -591,14 +605,13 @@ EOF;
 		$this->footer->output();
 	}
 
-
-	/// security()
-	///
-	/// Returns whether the user is authenticated. Use like this, only on pages meant for both public and admin use:
-	///
-	///    <?php
-	///    $admin = P::security();
-	///
+	/* security()
+	
+	   Returns whether the user is authenticated. Use like this, only on pages meant for both public and admin use:
+	
+	       <?php
+	       $admin = P::security();
+	*/
 	public static function security() {
 		global $my_password;
 
@@ -608,13 +621,14 @@ EOF;
 		return ((isset($_GET['tok'])) && (isset($_SESSION["current_user"])) && (isset($_SESSION["rtoken"])) && (strcmp($_GET['tok'], M::Secure($my_password, $pin)) == 0) && (strcmp($_SESSION["rtoken"], M::Secure($my_password, $pin, true)) == 0));
 	}
 
-	/// adminSecurity()
-	///
-	/// Unlike security(), this does not return anything. Use only on pages for which admin privileges are required. This kicks out the user if they are not sufficiently authenticated 
-	///
-	///    <?php
-	///    P::adminSecurity();
-	///
+	/* adminSecurity()
+	
+	   Unlike security(), this does not return anything. Use only on pages for which admin privileges are required. This kicks out the
+	   user if they are not sufficiently authenticated 
+	
+	       <?php
+	       P::adminSecurity();
+	*/
 	public static function adminSecurity() {
 		global $my_password;
 		$ext = \TBcom\ext;

@@ -69,16 +69,18 @@ class MySQLFailException extends \Exception {
 	}
 };
 
+///     \TBcom\Methods
+///
 class Methods {
 	
-	/// Tag($plchold, $optsArray)
-	///
-	/// Old, deprecated legacy function notorious for hideous code - Really you shouldn't use this.
-	/// If you're curious on how this worked, and why it was terrible:
-	///
-	///     <?php
-	///     $string = M::Tag("Full name: {{0}}, Age: {{1}}, Location: {{2}}", [ $name, $age, $location ]);
-	///
+	/* Tag($plchold, $optsArray)
+	  
+	   Old, deprecated legacy function notorious for hideous code - Really you shouldn't use this.
+	   If you're curious on how this worked, and why it was terrible:
+	  
+	       <?php
+	       $string = M::Tag("Full name: {{0}}, Age: {{1}}, Location: {{2}}", [ $name, $age, $location ]);
+	*/
 	public static function Tag($plchold, $optsArray) {
 		$x = 0;
 		foreach ($optsArray as $v) {
@@ -88,15 +90,15 @@ class Methods {
 		return $plchold;
 	}
 
-	/// Secure($pass, $pin, $rev = false)
-	///
-	/// Generates a 64-character hex token from a universal password string and a universal PIN.
-	/// The third arguments tells whether to reverse the output of the hash or not.
-	///
-	///      <?php
-	///      $token = M::Secure("secret", "123456", true);
-	///      echo $token;  // echoes "68619af728c36de6811f7ffe628.."
-	///
+	/* Secure($pass, $pin, $rev = false)
+	
+	   Generates a 64-character hex token from a universal password string and a universal PIN.
+	   The third arguments tells whether to reverse the output of the hash or not.
+	  
+	       <?php
+	       $token = M::Secure("secret", "123456", true);
+	       echo $token;  // echoes "68619af728c36de6811f7ffe628..";
+	*/
 	public static function Secure($pass, $pin, $rev = false) {
 		if ($rev)
 			return strrev(hash("sha256", $pass) . hash("sha256", ($pin . $pin)));
@@ -104,29 +106,29 @@ class Methods {
 			return hash("sha256", $pass) . hash("sha256", ($pin . $pin));
 	}
 
-	/// CSRFSecure($agent)
-	///
-	/// Generates a 64-character hex token for validating forms against cross-site attacks.
-	/// This will return the exact same hash for the same user agent.
-	///
-	///      <?php
-	///      $csrf = M::CSRFSecure($_SERVER["HTTP_USER_AGENT"]);
-	///
+	/* CSRFSecure($agent)
+	
+	   Generates a 64-character hex token for validating forms against cross-site attacks.
+	   This will return the exact same hash for the same user agent.
+	
+	       <?php
+	       $csrf = M::CSRFSecure($_SERVER["HTTP_USER_AGENT"]);
+	*/
 	public static function CSRFSecure($agent) {
 		return hash("sha256", ($agent . "aJKFmagic"));
 	}
 
-	/// Snip($beginning, $end, $string)
-	///
-	/// Deletes all text between $beginning and $end (inclusive), and returns the result.
-	/// Useful for removing conditional syntax blocks from view files.
-	///
-	///      <?php
-	///      $string = "That\'s when I said holy fucking shit buddy";
-	///      $string = M::Snip("holy", "shit", $string);
-	///
-	///      // Returns "That's when I said  buddy"
-	///
+	/* Snip($beginning, $end, $string)
+	
+	   Deletes all text between $beginning and $end (inclusive), and returns the result.
+	   Useful for removing conditional syntax blocks from view files.
+	
+	       <?php
+	       $string = "That\'s when I said holy fucking shit buddy";
+	       $string = M::Snip("holy", "shit", $string);
+	 
+	       // Returns "That's when I said  buddy"
+	*/
 	public static function Snip($beginning, $end, $string) {
 		$beginningPos = strpos($string, $beginning);
 		$endPos = strpos($string, $end);
@@ -137,23 +139,23 @@ class Methods {
 		return str_replace($textToDelete, "", $string);
 	}
 
-	/// filesFind($path, $reg)
-	///
-	/// Return the number of files found matching RegEx $reg in $path.
-	///
+	/* filesFind($path, $reg)
+	
+	   Return the number of files found matching RegEx $reg in $path.
+	*/
 	public static function filesFind($path, $reg) {
 		$dir = $path;
 		$c = glob($dir . "*." . $reg, GLOB_BRACE);
 		return count($c);
 	}
 
-	/// Cache($file)
-	///
-	/// Compile $file in Zend OpCache. Best used with __FILE__.
-	///
-	///      <?php
-	///      M::Cache(__FILE__);
-	///
+	/* Cache($file)
+	
+	   Compile $file in Zend OpCache. Best used with __FILE__.
+	
+	       <?php
+	       M::Cache(__FILE__);
+	 */
 	public static function Cache($file) {
 		if (!opcache_is_script_cached($file)) {
 			opcache_compile_file($file);
