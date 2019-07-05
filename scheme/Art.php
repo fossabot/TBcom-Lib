@@ -115,6 +115,10 @@ class Art extends PostType {
 		];
 	}
 
+	/* write()
+	
+	   Insert the currently stored fields into the database.
+	*/
 	public function write() {
 		global $TheBase;
 
@@ -150,6 +154,14 @@ class Art extends PostType {
 		unset($st);
 	}
 
+	/* read($s = "", $i = 0)
+	
+	   Read a row from the database, given series $s and ID $i.
+
+	       <?php
+	       $a = new Scheme\Art();
+	       $a->read("foob", 10);
+	*/
 	public function read($s = "", $i = 0) {
 		global $TheBase;
 
@@ -185,6 +197,10 @@ class Art extends PostType {
 		unset($st);
 	}
 
+	/* update($s = "", $i = 0)
+	
+	   Update an artwork in the database given a series $s and an ID $i.
+	*/
 	public function update($s = "", $i = 0) {
 		global $TheBase;
 
@@ -227,6 +243,14 @@ class Art extends PostType {
 		unset($fdescript);
 	}
 
+	/* getRecent()
+	
+	   Read the most recent artwork from the database.
+
+	       <?php
+	       $a = new Scheme\Art();
+	       $a->getRecent();
+	*/
 	public function getRecent() {
 		global $TheBase;
 		$ext = \TBcom\ext;
@@ -246,6 +270,9 @@ class Art extends PostType {
 		unset($st);
 	}
 
+	/* fetchCode($code = "", &$numrows = 0)
+	
+	*/
 	public static function fetchCode($code = "", &$numrows = 0) {
 		global $TheBase;
 
@@ -261,6 +288,14 @@ class Art extends PostType {
 		return $rows;
 	}
 
+	/* echoCode($code = "", $atoken = "\"")
+	
+	   Returns formatted HTML of all pieces in the given series $code, with optional admin token $atoken.
+
+	       <?php
+	       $output = Scheme\Art::echoCode("foob");
+	       $page->setMiddle($output);
+	*/
 	public static function echoCode($code = "", $atoken = "\"") {
 		global $TheBase;
 		global $ArtBody;
@@ -311,6 +346,14 @@ EOF;
 		return $output . "\n</div>\n</center>";
 	}
 
+	/* echoAll($atoken = "\"")
+	
+	   Returns formatted HTML of all pieces in the database, ordered alphabetically by series, and numerically by ID.
+
+	       <?php
+	       $output = Scheme\Art::echoAll();
+	       $page->setMiddle($output);
+	*/
 	public static function echoAll($atoken = "\"") {
 		global $TheBase;
 		global $ArtBody;
@@ -344,6 +387,10 @@ EOF;
 		return $output . "\t</div>\n\t</center>\n";
 	}
 
+	/* navigate($s = "", $i = 0, $ad = false)
+	
+	   Generate formatted pagination links, given the current series $s and ID $i.
+	*/
 	public static function navigate($s = "", $i = 0, $ad = false) {
 		global $TheBase;
 		$ext = \TBcom\ext;
@@ -368,6 +415,10 @@ EOF;
 		return $output;
 	}
 
+	/* table($token)
+	
+	   Generate formatted HTML table of all art pieces (for admin only), with admin token $token.
+	*/
 	public static function table($token) {
 		global $TheBase;
 		$ext = \TBcom\ext;

@@ -9,6 +9,8 @@
 namespace TBcom\Scheme;
 require_once(__DIR__ . "/../Post.php");
 
+///     \TBcom\Scheme\Blog
+///
 class Blog extends PostType {
 	/* TABLE: `blog`
 		___________________________
@@ -30,6 +32,13 @@ class Blog extends PostType {
 	private $title;	
 	private $type;
 
+	/* constructor
+	
+	   The constructor of a Blog post takes its new ID $i, and the body of the post $b, as arguments.
+	
+	       <?php
+	       $a = new Scheme\Blog(20, "hello world");
+	*/
 	public function __construct($i = 0, $b = "") {
 		parent::__construct($i, $b);
 	}
@@ -42,6 +51,10 @@ class Blog extends PostType {
 		unset($this->type);
 	}
 
+	/* {set,get}{Title,Comp,Tag,Id,Body,Type}
+	
+	   Setters and getters for fields of the Blog post.
+	*/
 	public function setTitle($t) { $this->title = $t; }
 	public function getTitle() { return $this->title; }
 	public function setComp($df = "") { $this->comp = $df; }
@@ -51,6 +64,19 @@ class Blog extends PostType {
 	public function setId($i) { parent::setId($i); }
 	public function getId() { return parent::getId(); }
 	public function setBody($b) { parent::setBody($b); }
+
+	/* getBody($parse = 2)
+	
+	   This function returns the body of the Blog post. The argument $parse tells the function whether or not to parse the HTML.
+	   If $parse is equal to 1, the body of the post will be parsed and HTML matching the BBCode/Markdown will be returned.
+	   If $parse is not equal to 1, the raw text of the body will be returned.
+	
+	       <?php
+	       $a = new Scheme\Blog();
+	       $a->read(10);
+		   $body = $a->getBody(2);
+		   $parsed = $a->getBody(1);
+	*/
 	public function getBody($parse = 2) {
 		if ($parse == 1) {
 			$parser = new \JBBCode\Parser();
