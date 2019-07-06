@@ -71,11 +71,11 @@ class Blog extends PostType {
 	   If $parse is equal to 1, the body of the post will be parsed and HTML matching the BBCode/Markdown will be returned.
 	   If $parse is not equal to 1, the raw text of the body will be returned.
 	
-	       <?php
-	       $a = new Scheme\Blog();
-	       $a->read(10);
-		   $body = $a->getBody(2);
-		   $parsed = $a->getBody(1);
+           <?php
+           $a = new Scheme\Blog();
+           $a->read(10);
+           $body = $a->getBody(2);
+           $parsed = $a->getBody(1);
 	*/
 	public function getBody($parse = 2) {
 		if ($parse == 1) {
@@ -98,6 +98,21 @@ class Blog extends PostType {
 	public function setType($t) { $this->type = $t; }
 	public function getType() { return $this->type; }
 
+	/* seta($arr)
+	
+	   Set the fields of the Blog post using an associative array.
+	
+	       <?php
+	       $a = new Scheme\Blog();
+	       $a->seta([
+	           "id" => 1,
+               "body" => "hello world",
+               "title" => "Untitled",
+               "tag" => "ohmy",
+               "comp" => "2018-05-01",
+               "type" => "md"
+           ]);
+	*/
 	public function seta($arr) {
 		foreach ($arr as $k => $v) {
 			if (strcmp($k, "id") == 0) { parent::setId($v); }
@@ -108,6 +123,19 @@ class Blog extends PostType {
 			if (strcmp($k, "type") == 0) { $this->type = $v; }
 		}
 	}
+
+	/* geta(&$arr)
+	
+	   Get the fields of the current Blog post into an empty associative array.
+
+           <?php
+           $a = new Scheme\Blog(10);
+           $arr = [];
+           $a->read(10);
+           $a->geta(&$arr);
+
+	       print_r($arr);
+	*/
 	public function geta(&$arr) {
 		$arr = [
 			"id" => parent::getId(),
@@ -119,10 +147,29 @@ class Blog extends PostType {
 		];
 	}
 
+	/* isMark()
+	
+	   Returns whether the post is in Markdown (true) or BBCode (false).
+	*/
 	public function isMark() {
 		return (strcmp($this->type, "md") == 0);
 	}
 
+	/* write($q = "INSERT INTO `blog` VALUES(?, NOW(), ?, ?, ?, ?)")
+	
+	   Insert the current blog post into the database using prepared query $q.
+	
+	       <?php
+	       $a = new Scheme\Blog();
+	       $a->seta([
+               "id" => $_POST['id'],
+	           "body" => $_POST['body'],
+	           "title" => $_POST['title'],
+	           "tag" => $_POST['tag'],
+	           "type" => $_POST['type']
+	       ]);
+	       $a->write();
+	*/
 	public function write($q = "INSERT INTO `blog` VALUES(?, NOW(), ?, ?, ?, ?)") {
 		global $TheBase;
 		
@@ -153,6 +200,14 @@ class Blog extends PostType {
 		$st->close();
 	}
 
+	/* read($id = 0)
+	
+	   Read a Blog post from the database given the ID $id.
+	
+           <?php
+           $a = new Scheme\Blog();
+           $a->read($_GET['id']);
+	*/
 	public function read($id = 0) {
 		global $TheBase;
 
@@ -184,6 +239,10 @@ class Blog extends PostType {
 		unset($st);
 	}
 
+	/* update()
+	
+	   Update the currently selected Blog post with the current fields.
+	*/
 	public function update() {
 		global $TheBase;
 
@@ -205,6 +264,18 @@ class Blog extends PostType {
 		unset($st);
 	}
 
+	/* getRecent()
+	
+	   Read the most recent Blog post in the database.
+	
+	       <?php
+           $a = new Scheme\Blog();
+           $a->getRecent();
+           $arr = [];
+           $a->geta(&$arr);
+
+           print_r($arr);
+	*/
 	public function getRecent() {
 		global $TheBase;
 
@@ -225,6 +296,14 @@ class Blog extends PostType {
 		unset($st);
 	}
 
+	/* echoRecent($admin = false, $sadmin = "")
+	
+	   Return formatted HTML of the five most recent Blog posts. $admin is whether the content is being echoed on an admin page or not,
+	   and $sadmin is the "&tok=t0k3nt0k3n..." part of the URL.
+
+	       <?php
+	       $output = Scheme\Blog::echoRecent();
+	*/
 	public static function echoRecent($admin = false, $sadmin = "") {
 		global $TheBase;
 		$ext = \TBcom\ext;
@@ -297,6 +376,14 @@ EOF;
 		return $output;
 	}
 
+	/* archive()
+	
+	   Returns formatted HTML of all blog posts in a table, ready for the public.
+	
+	       <?php
+	       $output = Scheme\Blog::archive();
+	       echo $output;
+	*/
 	public static function archive() {
 		global $TheBase;
 		$ext = \TBcom\ext;
@@ -335,6 +422,11 @@ EOF;
 		return $output;
 	}
 
+	/* navigate($i = 0, $sadmin = "\"")
+	
+	   Returns formatted HTML for navigation to previous and next blog posts, given ID $i.
+	   $sadmin goes at the end of URLs, and is to be populated with a $token if we're on an admin page.
+	*/
 	public static function navigate($i = 0, $sadmin = "\"") {
 		global $TheBase;
 
@@ -389,6 +481,17 @@ EOF;
 		return $output;
 	}
 
+	/* table($token)
+	
+	   Generates formatted HTML of all blog posts in a table, but only for the admin section. archive() is used
+	   for the public view. $token is the current admin token.
+	
+           <?php
+           $a = new Build\Page("top", "middle");
+
+           $output = Scheme\Blog::table($a->getToken());
+           echo $output;
+	*/
 	public static function table($token) {
 		global $TheBase;
 		$ext = \TBcom\ext;
@@ -435,6 +538,14 @@ EOF;
 		return $output;
 	}
 
+	/* delete($i = 0)
+	
+	   Deletes the Blog post with the given ID $i, no questions asked.
+	
+           <?php
+           Scheme\Blog::delete($_GET['id']);
+           echo "the post has been deleted";
+	*/
 	public static function delete($i = 0) {
 		global $TheBase;
 

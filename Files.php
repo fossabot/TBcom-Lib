@@ -8,6 +8,8 @@
  */
 namespace TBcom;
 
+///    \TBcom\MyFile
+///
 class MyFile {
 	public $select;
 	public $path;
@@ -19,7 +21,7 @@ class MyFile {
 		$this->title = $t;
 	}
 }
-
+/*
 $MyFiles[] = new MyFile("bashrc", "babkock-dotfiles/bashrc", "Dotfiles / .bashrc");
 $MyFiles[] = new MyFile("bash_aliases", "babkock-dotfiles/bash_aliases", "Dotfiles / .bash_aliases");
 $MyFiles[] = new MyFile("config.conf", "babkock-dotfiles/neofetch/config.conf", "Dotfiles / neofetch config.conf");
@@ -49,6 +51,7 @@ $MyFiles[] = new MyFile("volume", "babkock-dotfiles/bin/volume", "Dotfiles / vol
 $MyFiles[] = new MyFile("dwm.config", "babkock-dotfiles/dwm/config.h", "Dotfiles / DWM config.h");
 $MyFiles[] = new MyFile("dwm.dwm", "babkock-dotfiles/dwm/dwm.c", "Dotfiles / DWM dwm.c");
 $MyFiles[] = new MyFile("sl.config", "babkock-dotfiles/slstatus/config.h", "Dotfiles / SlStatus config.h");
+ */
 
 $MyFiles[] = new MyFile("tm_draw.c", "tonematrix-0.92/src/draw.c", "ToneMatrix / draw.c");
 $MyFiles[] = new MyFile("tm_draw.h", "tonematrix-0.92/src/draw.h", "ToneMatrix / draw.h");
@@ -78,3 +81,4 @@ $MyFiles[] = new MyFile("tp_graphics.c", "tripprog-0.9/graphics.c", "Tripprog / 
 $MyFiles[] = new MyFile("tp_graphics.h", "tripprog-0.9/graphics.h", "Tripprog / graphics.h");
 $MyFiles[] = new MyFile("tp_main.c", "tripprog-0.9/main.c", "Tripprog / main.c");
 $MyFiles[] = new MyFile("tp_main.h", "tripprog-0.9/main.h", "Tripprog / main.h");
+

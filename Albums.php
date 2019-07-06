@@ -8,6 +8,8 @@
 */
 namespace TBcom;
 
+///    \TBcom\Album
+///
 class Album {
 	public $title;
 	public $description;
