@@ -29,6 +29,13 @@ class Opinion {
 	private $format;
 	private $comp;
 
+	/* constructor
+	
+	   The constructor of an Opinion page takes its filename.
+
+	       <?php
+           $a = new Scheme\Opinion("gretavanfleet");
+	*/
 	public function __construct($f = "") {
 		$this->file = $f;
 	}
@@ -40,7 +47,12 @@ class Opinion {
 		unset($this->type);
 		unset($this->format);
 	}
+	
 
+	/* {set,get}{File,Comp,Type,Format,Body}
+	
+	   Setters and getters for fields of the Opinion page.
+	*/
 	public function setFile($f = "") { $this->file = $f; }
 	public function getFile() { return $this->file; }
 	public function setComp($c = "") { $this->comp = $c; }
@@ -50,6 +62,20 @@ class Opinion {
 	public function setFormat($f = "") { $this->format = $f; }
 	public function getFormat() { return $this->format; }
 	public function setBody($b) { $this->body = $b; }
+	
+	/* getBody($parse = 2)
+	
+	   This function returns the body of the review. Just like in Scheme\Blog, the argument $parse tells
+	   the function whether or not to parse the HTML. If $parse is equal to 1, the body of the post
+	   will be parsed and HTML matching the BBCode/Markdown will be returned.
+	   If $parse is not equal to 1, the raw text of the body will be returned.
+
+	       <?php
+	       $a = new Scheme\Opinion();
+		   $a->read("nirvana");
+		   $raw = $a->getBody(2);
+		   $parsed = $a->getBody(1);
+	*/
 	public function getBody($parse = 2) {
 		if ($parse == 1) {
 			$parser = new \JBBCode\Parser();
@@ -68,6 +94,23 @@ class Opinion {
 			return $this->body;
 	}
 
+	/* seta($arr)
+	
+	   Each of the content type classes have seta() and geta() functions, for setting and
+	   retrieving all of the fields at once.
+	
+	       <?php
+	       $a = new Scheme\Opinion();
+	       $a->seta([
+	           "file" => "Rush",
+			   "body" => "This band sucks. Tom Sawyer is good tho",
+			   "comp" => "2112-20-20",
+			   "type" => "music",
+			   "format" => "md"
+		   ]);
+		   
+	    It doesn't matter what order the elements of the array are in. You can also omit any fields that have no value.
+	*/
 	public function seta($arr) {
 		foreach ($arr as $k => $v) {
 			if (strcmp($k, "file") == 0) { $this->file = $v; }
@@ -77,6 +120,21 @@ class Opinion {
 			if (strcmp($k, "format") == 0) { $this->format = $v; }
 		}
 	}
+
+	/* geta(&$arr)
+	
+	   Get the fields of the current Opinion page into an empty associative array.
+	
+	       <?php
+	       $a = new Scheme\Opinion("smashmouth");
+	       $arr = [];
+	       $a->read("smashmouth");
+		   $a->geta(&$arr);
+
+		   print_r($arr);
+
+		This example would print all of the fields retrieved from geta().
+	*/
 	public function geta(&$arr) {
 		$arr = [
 			"file" => $this->file,
@@ -87,6 +145,10 @@ class Opinion {
 		];
 	}
 
+	/* isMark()
+	
+	   Returns whether the post is in Markdown (true) or BBCode (false).
+	*/
 	public function isMark() {
 		if (strcmp($this->format, "md") == 0)
 			return true;
@@ -94,10 +156,30 @@ class Opinion {
 			return false;
 	}
 
+	/* isEmpty()
+	
+	   Returns true if any of the fields are empty.
+	*/
 	public function isEmpty() {
 		return (!$this->file || !$this->type || !$this->body || !$this->format);
 	}
 
+	/* write($q = "INSERT INTO `opinions` VALUES(?, ?, ?, ?, NOW())")
+	
+	   Insert the current opinion page into the database using prepared query $q. Each of the data
+	   type classes have read(), write(), and update() functions.
+
+	       <?php
+	       $a = new Scheme\Opinion();
+	       $a->seta([
+	           "file" => $_POST['file'],
+			   "body" => $_POST['body'],
+			   "comp" => $_POST['comp'],
+			   "type" => $_POST['type'],
+			   "format" => $_POST['format']
+	       ]);
+	       $a->write();
+	*/
 	public function write($q = "INSERT INTO `opinions` VALUES(?, ?, ?, ?, NOW())") {
 		global $TheBase;
 		
@@ -127,6 +209,14 @@ class Opinion {
 		$st->close();
 	}
 
+	/* read($f = "")
+	
+	   Read an Opinion page from the database given the filename $f.
+
+	       <?php
+	       $a = new Scheme\Opinion();
+	       $a->read($_GET['f']);
+	*/
 	public function read($f = "") {
 		global $TheBase;
 
@@ -157,6 +247,11 @@ class Opinion {
 		unset($st);
 	}
 
+	/* update()
+	
+	   Update the currently selected Opinion page with the current fields. Only the Opinion
+	   class's update() function takes a query as an argument.
+	*/
 	public function update($q = "UPDATE `opinions` SET `type`=?, `body`=?, `format`=?, `comp`=NOW() WHERE `file`=? LIMIT 1") {
 		global $TheBase;
 
@@ -186,6 +281,10 @@ class Opinion {
 		unset($st);
 	}
 
+	/* recent($type = "film")
+	
+	   Load the most recent Opinion page into the object.
+	*/
 	public function recent($type = "film") {
 		global $TheBase;
 		$ext = \TBcom\ext;
@@ -205,6 +304,11 @@ class Opinion {
 		unset($st);
 	}
 
+	/* table($token)
+	
+	   Generate formatted HTML table of all Opinion pages (for admin only), with admin token
+	   $token.
+	*/
 	public static function table($token) {
 		global $TheBase;
 		$ext = \TBcom\ext;
@@ -250,6 +354,11 @@ EOF;
 		return $output;
 	}
 
+	/* delete($f = "")
+	
+	   Static function. Deletes the entry associated with filename $f from the database.
+	   Because of this function, music and film cannot both have entries of the same filename.
+	*/
 	public static function delete($f = "") {
 		global $TheBase;
 		$ext = \TBcom\ext;

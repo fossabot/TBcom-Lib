@@ -111,7 +111,9 @@ class Blog extends PostType {
                "tag" => "ohmy",
                "comp" => "2018-05-01",
                "type" => "md"
-           ]);
+	       ]);
+
+	   It doesn't matter what order the elements of the array are in. You can also omit any fields that have no value.
 	*/
 	public function seta($arr) {
 		foreach ($arr as $k => $v) {
@@ -134,7 +136,9 @@ class Blog extends PostType {
            $a->read(10);
            $a->geta(&$arr);
 
-	       print_r($arr);
+		   print_r($arr);
+
+	   This example would print all of the fields retrieved from geta().
 	*/
 	public function geta(&$arr) {
 		$arr = [
